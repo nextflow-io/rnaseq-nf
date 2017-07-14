@@ -17,16 +17,19 @@ implemented with Nextflow.
 
 2) Install Nextflow (version 0.24.x or higher)
 
-    `curl -fsSL get.nextflow.io | bash`
+    curl -s https://get.nextflow.io | bash
 
 3) Launch the pipeline execution: 
 
-    `./nextflow run nextflow-io/rnatoy -with-docker` 
+    ./nextflow run nextflow-io/rnaseq-nf -with-docker
         
-When the execution completes check the transcript files in the current directory (`*.gtf`). 
+When the execution completes open in your browser the report generated at the following path:
 
-Note: the very first time you execute it, it will a few seconds to download the associated 
-Docker image required to execute the pipeline.  
+    results/multiqc_report.html 
+	
+Note: the very first time you execute it, it will take a few minutes to download the pipeline 
+from this GitHub repository and the the associated Docker images needed to execute the pipeline.  
+
 
 ## Cluster support
 

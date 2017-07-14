@@ -4,7 +4,7 @@ A basic pipeline for quantification of genomic features from short read data
 implemented with Nextflow.
 
 [![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A50.24.0-brightgreen.svg)](http://nextflow.io)
-![CircleCI status](https://circleci.com/gh/nextflow-io/rnatoy.png?style=shield)
+[![CircleCI status](https://circleci.com/gh/nextflow-io/rnaseq-nf.png?style=shield)](https://circleci.com/gh/nextflow-io/rnaseq-nf/tree/master)
 
 ## Requirements 
 
@@ -13,19 +13,21 @@ implemented with Nextflow.
 
 ## Quickstart 
 
-1) If you don't have it already install Docker in your computer. Read more [here](https://docs.docker.com/).
+1. If you don't have it already install Docker in your computer. Read more [here](https://docs.docker.com/).
 
-2) Install Nextflow (version 0.24.x or higher)
+2. Install Nextflow (version 0.24.x or higher):
+      
+        curl -s https://get.nextflow.io | bash
 
-    `curl -s https://get.nextflow.io | bash`
+3. Launch the pipeline execution: 
 
-3) Launch the pipeline execution: 
-
-    `./nextflow run nextflow-io/rnaseq-nf -with-docker`
+        ./nextflow run nextflow-io/rnaseq-nf -with-docker
         
-When the execution completes open in your browser the report generated at the following path:
+4. When the execution completes open in your browser the report generated at the following path:
 
-    results/multiqc_report.html 
+        results/multiqc_report.html 
+	
+You can see an example report at the following [link](http://multiqc.info/examples/rna-seq/multiqc_report.html).	
 	
 Note: the very first time you execute it, it will take a few minutes to download the pipeline 
 from this GitHub repository and the the associated Docker images needed to execute the pipeline.  

@@ -17,11 +17,11 @@ implemented with Nextflow.
 
 2) Install Nextflow (version 0.24.x or higher)
 
-    curl -s https://get.nextflow.io | bash
+    `curl -s https://get.nextflow.io | bash`
 
 3) Launch the pipeline execution: 
 
-    ./nextflow run nextflow-io/rnaseq-nf -with-docker
+    `./nextflow run nextflow-io/rnaseq-nf -with-docker`
         
 When the execution completes open in your browser the report generated at the following path:
 
@@ -48,7 +48,7 @@ Currently the following resource manager platforms are supported:
 
 By default the pipeline is parallelized by spawning multiple threads in the machine where the script is launched.
 
-To submit the execution to a UGE cluster create a file named `nextflow.config`, in the directory
+To submit the execution to a UGE cluster create a file named `nextflow.config` in the directory
 where the pipeline is going to be executed with the following content:
 
     process {
@@ -57,7 +57,7 @@ where the pipeline is going to be executed with the following content:
     }
 
 To lean more about the avaible settings and the configuration file read the 
-[Nextflow documentation](http://www.nextflow.io/docs/latest/config.html).
+Nextflow [documentation](http://www.nextflow.io/docs/latest/config.html).
 
 
 ## Components 

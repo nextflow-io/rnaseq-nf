@@ -1,0 +1,11 @@
+machine:
+  java:
+    version: openjdk7
+  services:
+    - docker
+    
+test:
+  override:
+    - curl -fsSL get.nextflow.io | bash
+    - ./nextflow run . -with-docker
+    - ./nextflow run . -with-docker -profile s3test

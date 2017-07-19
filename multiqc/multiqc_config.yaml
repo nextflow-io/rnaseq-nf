@@ -8,4 +8,5 @@ report_header_info:
 
 custom_logo_url: 'https://www.nextflow.io'
 custom_logo_title: 'Center for Genomic Regulation'
+custom_logo: 'logo.png'
 

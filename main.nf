@@ -76,6 +76,7 @@ process index {
  
 process quant {
     tag "$pair_id"
+    publishDir params.outdir, mode: 'copy'
      
     input:
     file index from index_ch

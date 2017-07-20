@@ -109,6 +109,7 @@ process fastqc {
   
   
 process multiqc {
+    tag "featuring version 1.1"
     publishDir params.outdir, mode:'copy'
        
     input:

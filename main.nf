@@ -62,14 +62,14 @@ process index {
     tag "$transcriptome_file.simpleName"
     
     input:
-    file genome from transcriptome_file
+    file transcriptome from transcriptome_file
      
     output:
     file 'index' into index_ch
 
     script:       
     """
-    salmon index --threads $task.cpus -t $genome -i index
+    salmon index --threads $task.cpus -t $transcriptome -i index
     """
 }
  

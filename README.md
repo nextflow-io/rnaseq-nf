@@ -50,16 +50,13 @@ If you do not have your own kubernetes cluster setup, but still want to try kube
 
 1. Install Vagrant
 
-See instructions for [installing Vagrant](Install Vagrant in your Mac
-https://www.vagrantup.com/docs/installation/)
+See instructions for [installing Vagrant](https://www.vagrantup.com/docs/installation/)
 
-2. Create a Ubuntu Xenial box
-
-    Create an empty dir and change into 
+2. Create a Ubuntu Xenial box by first creating an empty dir, changing into it and running:
        
        vagrant init ubuntu/xenial64
 	   
-    Make sure the VM has 8 GB ram.
+    You should make sure the VM has 8 GB ram. Next start Vagrant and ssh into the VM:
 
         vagrant up 
         vagrant ssh

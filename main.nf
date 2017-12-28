@@ -35,7 +35,7 @@
  
 params.reads = "$baseDir/data/ggal/*_{1,2}.fq"
 params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
-params.outdir = "results"
+params.outdir = "."
 params.multiqc = "$baseDir/multiqc"
 
 log.info """\

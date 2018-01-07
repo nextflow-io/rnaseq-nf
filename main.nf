@@ -39,13 +39,12 @@ params.outdir = "."
 params.multiqc = "$baseDir/multiqc"
 
 log.info """\
-         R N A S E Q - N F   P I P E L I N E    
-         ===================================
-         transcriptome: ${params.transcriptome}
-         reads        : ${params.reads}
-         outdir       : ${params.outdir}
-         """
-         .stripIndent()
+ R N A S E Q - N F   P I P E L I N E    
+ ===================================
+ transcriptome: ${params.transcriptome}
+ reads        : ${params.reads}
+ outdir       : ${params.outdir}
+ """
 
 
 transcriptome_file = file(params.transcriptome)

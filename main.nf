@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2017, Centre for Genomic Regulation (CRG) and the authors.
+ * Copyright (c) 2013-2018, Centre for Genomic Regulation (CRG) and the authors.
  *
  *   This file is part of 'RNASEQ-NF'.
  *

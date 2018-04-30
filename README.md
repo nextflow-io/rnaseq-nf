@@ -9,7 +9,7 @@ implemented with Nextflow.
 ## Requirements 
 
 * Unix-like operating system (Linux, macOS, etc)
-* Java 7/8 
+* Java 8 
 
 ## Quickstart 
 

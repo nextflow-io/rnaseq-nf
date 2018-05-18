@@ -1,0 +1,10 @@
+name: rnaseq-nf
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  # Default bismark
+  - salmon=0.8.2
+  - fastqc=0.11.5
+  - multiqc=1.5

@@ -1,0 +1,14 @@
+sudo: required
+jdk:
+- openjdk8
+services:
+- docker
+branches:
+  only:
+  - master  
+install:
+- sudo apt-get -qq update
+- sudo apt-get -qq -y install graphviz realpath
+script:
+- curl -fsSL get.nextflow.io | bash
+- ./nextflow run . -with-docker

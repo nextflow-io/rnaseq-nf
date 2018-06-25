@@ -60,7 +60,8 @@ Channel
 
 process index {
     tag "$transcriptome_file.simpleName"
-    
+    label 'salmon'
+
     input:
     file genome from transcriptome_file
      
@@ -77,7 +78,8 @@ process index {
 process quant {
     tag "$pair_id"
     publishDir params.outdir, mode: 'copy'
-     
+    label 'salmon'
+
     input:
     file index from index_ch
     set pair_id, file(reads) from read_pairs_ch
@@ -110,7 +112,7 @@ process fastqc {
   
   
 process multiqc {
-    tag "featuring version 1.1"
+    tag "featuring version 1.5"
     publishDir params.outdir, mode:'copy'
        
     input:

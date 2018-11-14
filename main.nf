@@ -74,6 +74,7 @@ process index {
 
 
 process quant {
+    label bigTask
     tag "$pair_id"
 
     input:

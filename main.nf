@@ -58,7 +58,7 @@ Channel
 
 
 process index {
-    tag "$transcriptome_file.simpleName"
+    tag "$transcriptome.simpleName"
 
     input:
     file transcriptome from transcriptome_file

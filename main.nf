@@ -60,6 +60,7 @@ Channel
 
 process index {
     tag "$transcriptome_file.simpleName"
+    container 'quay.io/biocontainers/salmon:0.8.2--1'
     
     input:
     file transcriptome from transcriptome_file
@@ -76,6 +77,7 @@ process index {
  
 process quant {
     tag "$pair_id"
+    container 'quay.io/biocontainers/salmon:0.8.2--1'
      
     input:
     file index from index_ch
@@ -92,6 +94,7 @@ process quant {
   
 process fastqc {
     tag "FASTQC on $sample_id"
+    container 'genomicpariscentre/fastqc'
 
     input:
     set sample_id, file(reads) from read_pairs2_ch
@@ -110,7 +113,8 @@ process fastqc {
   
 process multiqc {
     publishDir params.outdir, mode:'copy'
-       
+    container 'quay.io/biocontainers/multiqc:1.2--py27_0'
+
     input:
     file('*') from quant_ch.mix(fastqc_ch).collect()
     file(config) from multiqc_file

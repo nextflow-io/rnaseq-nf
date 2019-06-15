@@ -103,19 +103,19 @@ process fastqc {
 
 process multiqc {
     publishDir params.outdir, mode:'copy'
-
+    
     input:
     file('*') from quant_ch.mix(fastqc_ch).collect()
     file(config) from multiqc_file
 
     output:
-    file('multiqc_report.html')
+    file('multiqc_report.html') optional true
 
     script:
     """
     cp $config/* .
     echo "custom_logo: \$PWD/logo.png" >> multiqc_config.yaml
-    multiqc .
+    multiqc -v .
     """
 }
 

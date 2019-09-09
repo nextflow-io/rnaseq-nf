@@ -45,8 +45,7 @@ multiqc_file = file(params.multiqc)
 
 
 Channel
-    .fromFilePairs( params.reads )
-    .ifEmpty { error "Cannot find any reads matching: ${params.reads}" }
+    .fromFilePairs( params.reads, checkExists:true )
     .into { read_pairs_ch; read_pairs2_ch }
 
 

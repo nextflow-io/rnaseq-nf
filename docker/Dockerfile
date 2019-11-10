@@ -1,4 +1,4 @@
-FROM continuumio/miniconda
+FROM continuumio/miniconda:4.7.12
 MAINTAINER Paolo Di Tommaso <paolo.ditommaso@gmail.com>
 
 RUN apt-get -y install ttf-dejavu

@@ -70,7 +70,7 @@ process quant {
 
     input:
     file index from index_ch
-    set pair_id, file(reads) from read_pairs_ch
+    tuple pair_id, file(reads) from read_pairs_ch
 
     output:
     file(pair_id) into quant_ch
@@ -86,7 +86,7 @@ process fastqc {
     publishDir params.outdir
 
     input:
-    set sample_id, file(reads) from read_pairs2_ch
+    tuple sample_id, file(reads) from read_pairs2_ch
 
     output:
     file("fastqc_${sample_id}_logs") into fastqc_ch

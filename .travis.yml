@@ -5,10 +5,13 @@ services:
 - docker
 branches:
   only:
-  - master  
+  - master
+env:
+- NXF_ANSI_LOG=false
 install:
 - sudo apt-get -qq update
 - sudo apt-get -qq -y install graphviz realpath
 script:
 - curl -fsSL get.nextflow.io | bash
 - ./nextflow run . -with-docker
+- ./nextflow run . -profile batch

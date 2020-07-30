@@ -30,16 +30,16 @@ nextflow.enable.dsl = 2
  */
 
 params.reads = "$baseDir/data/ggal/*_{1,2}.fq"
-params.ref1 = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
+params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
 params.outdir = "results"
 params.multiqc = "$baseDir/multiqc"
 
 log.info """\
  R N A S E Q - N F   P I P E L I N E
  ===================================
- ref1:    : ${params.ref1}
- reads    : ${params.reads}
- outdir   : ${params.outdir}
+ transcriptome: ${params.transcriptome}
+ reads        : ${params.reads}
+ outdir       : ${params.outdir}
  """
 
 // import modules
@@ -51,7 +51,7 @@ include { MULTIQC } from './modules/multiqc'
  */
 workflow {
   read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
-  RNASEQ( params.ref1, read_pairs_ch )
+  RNASEQ( params.transcriptome, read_pairs_ch )
   MULTIQC( RNASEQ.out, params.multiqc )
 }
 

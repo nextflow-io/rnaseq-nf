@@ -1,4 +1,3 @@
-#!/bin/bash nextflow
 
 process INDEX {
     tag "$transcriptome.simpleName"

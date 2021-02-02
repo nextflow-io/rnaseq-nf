@@ -11,6 +11,18 @@
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
             "properties": {
+                "transcriptome": {
+                    "type": "string",
+                    "description": "The input transcriptome file",
+                    "default": "s3://rnaseq-nf/data/ggal/transcript.fa",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "reads": {
+                    "type": "string",
+                    "description": "The input read-pair files",
+                    "default": "s3://rnaseq-nf/data/ggal/lung_{1,2}.fq",
+                    "fa_icon": "fas fa-folder-open"
+                },
                 "outdir": {
                     "type": "string",
                     "description": "The output directory where the results will be saved.",

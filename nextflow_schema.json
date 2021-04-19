@@ -14,13 +14,11 @@
                 "transcriptome": {
                     "type": "string",
                     "description": "The input transcriptome file",
-                    "default": "s3://rnaseq-nf/data/ggal/transcript.fa",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "reads": {
                     "type": "string",
                     "description": "The input read-pair files",
-                    "default": "s3://rnaseq-nf/data/ggal/lung_{1,2}.fq",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {

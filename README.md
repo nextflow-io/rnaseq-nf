@@ -30,7 +30,7 @@ implemented with Nextflow.
 You can see an example report at the following [link](http://multiqc.info/examples/rna-seq/multiqc_report.html).	
 	
 Note: the very first time you execute it, it will take a few minutes to download the pipeline 
-from this GitHub repository and the the associated Docker images needed to execute the pipeline.  
+from this GitHub repository and the associated Docker images needed to execute the pipeline.  
 
 
 ## Cluster support

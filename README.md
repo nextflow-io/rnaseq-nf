@@ -15,7 +15,7 @@ implemented with Nextflow.
 
 1. If you don't have it already install Docker in your computer. Read more [here](https://docs.docker.com/).
 
-2. Install Nextflow (version 0.24.x or higher):
+2. Install Nextflow (version 20.07.x or higher):
       
         curl -s https://get.nextflow.io | bash
 
@@ -66,7 +66,7 @@ Nextflow [documentation](http://www.nextflow.io/docs/latest/config.html).
 
 RNASeq-NF uses the following software components and tools: 
 
-* [Salmon](https://combine-lab.github.io/salmon/) 0.8.2
+* [Salmon](https://combine-lab.github.io/salmon/) 1.0.0
 * [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) 0.11.5
-* [Multiqc](https://multiqc.info) 1.0
+* [Multiqc](https://multiqc.info) 1.5
 

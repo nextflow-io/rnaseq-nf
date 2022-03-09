@@ -30,7 +30,7 @@
 /* 
  * enables modules 
  */
-nextflow.preview.dsl = 2
+nextflow.enable.dsl = 2
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
@@ -41,7 +41,6 @@ params.reads = "$baseDir/data/ggal/*_{1,2}.fq"
 params.ref1 = "$baseDir/data/ggal/ref1.fa"
 params.ref2 = "$baseDir/data/ggal/ref2.fa"
 params.outdir = "results"
-params.multiqc = "$baseDir/multiqc"
 
 log.info """\
  R N A S E Q - N F   P I P E L I N E
@@ -53,16 +52,16 @@ log.info """\
  """
 
 // import modules
-include './modules/rnaseq' params(params)
+include {RNASEQ} from './modules/rnaseq' params(params)
 
 workflow ref1 {
-  get: reads
-  main: RNASEQ( params.ref1, reads, params.multiqc)
+  take: reads
+  main: RNASEQ( params.ref1, reads)
 }
 
 workflow ref2 {
-  get:reads 
-  main: RNASEQ( params.ref2, reads, params.multiqc)
+  take:reads 
+  main: RNASEQ( params.ref2, reads)
 }
 
 // main flow 

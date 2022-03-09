@@ -32,6 +32,7 @@ jobs:
       - name: Tests
         run: |
           curl -fsSL get.nextflow.io | bash
+          NXF_VER=21.04.1 ./nextflow run demo.nf -profile docker
           NXF_VER=21.04.1 ./nextflow run . -profile docker
         env:
           NXF_ANSI_LOG: false

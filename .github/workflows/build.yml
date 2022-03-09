@@ -1,6 +1,6 @@
 name: rnaseq-nf
 # This workflow is triggered on pushes to the repository.
-on: [push, workflow_dispatch]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:

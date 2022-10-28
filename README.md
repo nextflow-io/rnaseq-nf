@@ -32,6 +32,34 @@ You can see an example report at the following [link](http://multiqc.info/exampl
 Note: the very first time you execute it, it will take a few minutes to download the pipeline 
 from this GitHub repository and the associated Docker images needed to execute the pipeline.  
 
+## Pipeline flowchart
+
+Here is a visual representation of the design of RNASeq-NF pipeline, generated using the [visualization functionality](https://www.nextflow.io/docs/latest/tracing.html#dag-visualisation) of Nextflow.
+
+```mermaid
+%%{init: { 'theme': 'forest' } }%%
+flowchart TD
+    p0((Channel.fromFilePairs))
+    p1(( ))
+    p2[RNASEQ:INDEX]
+    p3[RNASEQ:FASTQC]
+    p4[RNASEQ:QUANT]
+    p5([concat])
+    p6([collect])
+    p7(( ))
+    p8[MULTIQC]
+    p9(( ))
+    p0 -->|read_pairs_ch| p3
+    p1 -->|transcriptome| p2
+    p2 --> p4
+    p3 --> p5
+    p0 -->|read_pairs_ch| p4
+    p4 -->|pair_id| p5
+    p5 --> p6
+    p6 -->|$out0| p8
+    p7 -->|config| p8
+    p8 --> p9
+```
 
 ## Cluster support
 

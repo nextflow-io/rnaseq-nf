@@ -1,7 +1,7 @@
 
 process INDEX {
     tag "$transcriptome.simpleName"
-    conda 'bioconda::salmon=1.6.0'
+    conda 'salmon=1.10.2'
     
     input:
     path transcriptome 

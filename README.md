@@ -94,7 +94,7 @@ Nextflow [documentation](http://www.nextflow.io/docs/latest/config.html).
 
 RNASeq-NF uses the following software components and tools: 
 
-* [Salmon](https://combine-lab.github.io/salmon/) 1.0.0
-* [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) 0.11.5
-* [Multiqc](https://multiqc.info) 1.5
+* [Salmon](https://combine-lab.github.io/salmon/)
+* [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+* [MultiQC](https://multiqc.info)
 

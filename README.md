@@ -3,19 +3,19 @@
 A basic pipeline for quantification of genomic features from short read data
 implemented with Nextflow.
 
-[![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A50.24.0-brightgreen.svg)](http://nextflow.io)
-[![Build Status](https://travis-ci.org/nextflow-io/rnaseq-nf.svg?branch=master)](https://travis-ci.org/nextflow-io/rnaseq-nf)
+[![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A523.04.0-brightgreen.svg)](http://nextflow.io)
+
 
 ## Requirements 
 
 * Unix-like operating system (Linux, macOS, etc)
-* Java 8 
+* Java 11 
 
 ## Quickstart 
 
 1. If you don't have it already install Docker in your computer. Read more [here](https://docs.docker.com/).
 
-2. Install Nextflow (version 20.07.x or higher):
+2. Install Nextflow (version 23.04.0 or later):
       
         curl -s https://get.nextflow.io | bash
 

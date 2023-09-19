@@ -1,8 +1,7 @@
 #!/usr/bin/env nextflow 
 
 /* 
- * Copyright (c) 2020-2021, Seqera Labs 
- * Copyright (c) 2013-2019, Centre for Genomic Regulation (CRG).
+ * Copyright (c) 2013-2023, Seqera Labs.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

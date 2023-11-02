@@ -8,5 +8,5 @@ RUN \
       multiqc=1.15 \
    && micromamba clean -a -y
 
-ENV PATH /opt/conda/bin:$PATH
+ENV PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
 USER root

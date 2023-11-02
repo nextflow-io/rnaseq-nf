@@ -8,4 +8,5 @@ RUN \
       multiqc=1.15 \
    && micromamba clean -a -y
 
+ENV PATH /opt/conda/bin:$PATH
 USER root

@@ -6,6 +6,7 @@ RUN \
       salmon=1.10.2 \
       fastqc=0.12.1 \
       multiqc=1.15 \
+      procps-ng \
    && micromamba clean -a -y
 
 ENV PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"

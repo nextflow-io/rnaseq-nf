@@ -5,7 +5,7 @@ RUN \
    micromamba install -y -n base -c defaults -c bioconda -c conda-forge \
       salmon=1.10.2 \
       fastqc=0.12.1 \
-      multiqc=1.15 \
+      multiqc=1.17 \
       procps-ng \
    && micromamba clean -a -y
 

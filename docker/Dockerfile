@@ -6,6 +6,9 @@ RUN \
       salmon=1.10.2 \
       fastqc=0.12.1 \
       multiqc=1.17 \
+      python=3.11 \
+      typing_extensions \
+      importlib_metadata \
       procps-ng \
    && micromamba clean -a -y
 

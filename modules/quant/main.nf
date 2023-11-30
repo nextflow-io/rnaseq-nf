@@ -1,17 +1,20 @@
 
-process QUANT {
-    tag "$pair_id"
-    conda 'salmon=1.10.2'
-
-    input:
-    path index 
-    tuple val(pair_id), path(reads) 
-
-    output:
-    path pair_id 
-
-    script:
+@ProcessFn(
+    directives={
+        tag { pair.id }
+        conda 'salmon=1.10.2'
+    },
+    inputs={
+        path { index }
+        path { pair.reads }
+    },
+    outputs={
+        path { pair.id }
+    },
+    script=true
+)
+def QUANT(Path index, Sample pair) {
     """
-    salmon quant --threads $task.cpus --libType=U -i $index -1 ${reads[0]} -2 ${reads[1]} -o $pair_id
+    salmon quant --threads $task.cpus --libType=U -i $index -1 ${pair.reads[0]} -2 ${pair.reads[1]} -o $pair.id
     """
 }

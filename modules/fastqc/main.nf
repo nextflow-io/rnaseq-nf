@@ -1,18 +1,21 @@
 params.outdir = 'results'
 
-process FASTQC {
-    tag "FASTQC on $sample_id"
-    conda 'fastqc=0.12.1'
-    publishDir params.outdir, mode:'copy'
-
-    input:
-    tuple val(sample_id), path(reads)
-
-    output:
-    path "fastqc_${sample_id}_logs" 
-
-    script:
+@ProcessFn(
+    directives={
+        tag { "FASTQC on $sample.id" }
+        conda 'fastqc=0.12.1'
+        publishDir params.outdir, mode:'copy'
+    },
+    inputs={
+        path { sample.reads }
+    },
+    outputs={
+        path { "fastqc_${sample.id}_logs" }
+    },
+    script=true
+)
+def FASTQC(Sample sample) {
     """
-    fastqc.sh "$sample_id" "$reads"
+    fastqc.sh "$sample.id" "${sample.reads.join(' ')}"
     """
 }

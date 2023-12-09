@@ -10,12 +10,13 @@ params.outdir = 'results'
         path { sample.reads }
     },
     outputs={
-        path { "fastqc_${sample.id}_logs" }
+        path '$file0', { "fastqc_${sample.id}_logs" }
+        emit { path('$file0') }
     },
     script=true
 )
 def FASTQC(Sample sample) {
     """
-    fastqc.sh "$sample.id" "${sample.reads.join(' ')}"
+    fastqc.sh "$sample.id" "$sample.reads"
     """
 }

@@ -10,7 +10,8 @@ params.outdir = 'results'
         path { config }
     },
     outputs={
-        path('multiqc_report.html')
+        path '$file0', 'multiqc_report.html'
+        emit { path('$file0') }
     },
     script=true
 )

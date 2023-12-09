@@ -9,7 +9,8 @@
         path { pair.reads }
     },
     outputs={
-        path { pair.id }
+        path '$file0', { pair.id }
+        emit { path('$file0') }
     },
     script=true
 )

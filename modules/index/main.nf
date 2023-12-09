@@ -5,10 +5,11 @@
         conda 'salmon=1.10.2'
     },
     inputs={
-        path { transcriptome } 
+        path { transcriptome }
     },
     outputs={
-        path 'index' 
+        path '$file0', 'index'
+        emit { path('$file0') }
     },
     script=true
 )

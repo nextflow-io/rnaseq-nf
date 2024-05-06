@@ -24,6 +24,7 @@
  * enables modules 
  */
 nextflow.enable.dsl = 2
+nextflow.preview.publish = true
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
@@ -63,15 +64,8 @@ workflow.onComplete {
 	log.info ( workflow.success ? "\nDone! Open the following report in your browser --> $params.outdir/multiqc_report.html\n" : "Oops .. something went wrong" )
 }
 
-output {
+publish {
   directory params.outdir
   mode 'copy'
 
-  'fastqc' {
-    path '.'
-  }
-
-  'multiqc' {
-    path '.'
-  }
 }

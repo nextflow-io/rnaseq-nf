@@ -10,7 +10,7 @@ process MULTIQC {
     path('multiqc_report.html'), emit: report
 
     publish:
-    report >> '.'
+    report >> 'multiqc'
 
     script:
     """

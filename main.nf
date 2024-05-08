@@ -25,6 +25,8 @@
  */
 nextflow.enable.dsl = 2
 
+nextflow.preview.output = true
+
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.foo` specify on the run command line `--foo some_value`.
@@ -66,12 +68,4 @@ workflow.onComplete {
 output {
   directory params.outdir
   mode 'copy'
-
-  'fastqc' {
-    path '.'
-  }
-
-  'multiqc' {
-    path '.'
-  }
 }

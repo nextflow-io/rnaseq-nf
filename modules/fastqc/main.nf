@@ -10,7 +10,7 @@ process FASTQC {
     path "fastqc_${sample_id}_logs", emit: logs
 
     publish:
-    logs >> 'fastqc'
+    logs >> '.'
 
     script:
     """

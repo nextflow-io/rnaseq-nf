@@ -24,7 +24,7 @@
  * enables modules 
  */
 nextflow.enable.dsl = 2
-nextflow.preview.publish = true
+nextflow.preview.output = true
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
@@ -55,17 +55,12 @@ workflow {
   read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
   RNASEQ( params.transcriptome, read_pairs_ch )
   MULTIQC( RNASEQ.out, params.multiqc )
+
+  publish:
+  MULTIQC.out >> '.'
 }
 
-/* 
- * completion handler
- */
-workflow.onComplete {
-	log.info ( workflow.success ? "\nDone! Open the following report in your browser --> $params.outdir/multiqc_report.html\n" : "Oops .. something went wrong" )
-}
-
-publish {
+output {
   directory params.outdir
   mode 'copy'
-
 }

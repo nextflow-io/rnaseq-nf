@@ -16,4 +16,7 @@ workflow RNASEQ {
 
   emit: 
      QUANT.out | concat(FASTQC.out) | collect
+
+  publish:
+    FASTQC.out >> '.'
 }

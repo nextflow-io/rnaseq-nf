@@ -24,6 +24,7 @@
  * enables modules 
  */
 nextflow.enable.dsl = 2
+
 nextflow.preview.output = true
 
 /*

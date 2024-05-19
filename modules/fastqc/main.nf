@@ -2,7 +2,7 @@ params.outdir = 'results'
 
 process FASTQC {
     tag "FASTQC on $sample_id"
-    conda 'fastqc=0.12.1'
+    conda 'bioconda::fastqc=0.12.1'
     publishDir params.outdir, mode:'copy'
 
     input:

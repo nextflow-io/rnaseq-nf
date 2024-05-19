@@ -15,6 +15,6 @@ process MULTIQC {
     """
     cp $config/* .
     echo "custom_logo: \$PWD/logo.png" >> multiqc_config.yaml
-    multiqc .
+    multiqc -o multiqc_report.html .
     """
 }

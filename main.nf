@@ -61,4 +61,9 @@ workflow {
 output {
   directory params.outdir
   mode 'copy'
+  fastqc {
+    index {
+      path 'index.csv'
+    }
+  }
 }

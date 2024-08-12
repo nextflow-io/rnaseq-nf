@@ -35,3 +35,10 @@ jobs:
           ./nextflow run . -profile docker
         env:
           NXF_ANSI_LOG: false
+
+      - name: Tests Wave
+        run: |
+          curl -fsSL get.nextflow.io | bash
+          ./nextflow run . -profile docker,wave
+        env:
+          NXF_ANSI_LOG: false

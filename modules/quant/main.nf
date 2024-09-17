@@ -1,7 +1,7 @@
 
 process QUANT {
     tag "$pair_id"
-    conda 'bioconda::salmon=1.10.2'
+    conda 'bioconda::salmon=1.10.3'
 
     input:
     path index 

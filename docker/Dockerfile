@@ -1,7 +1,6 @@
 #
-# don't waste time with this
-# use seqera containers 
-# https://seqera.io/containers/
+# don't waste your time with this
+# use seqera containers https://seqera.io/containers/
 #
 FROM mambaorg/micromamba:1.5.10-noble
 MAINTAINER Paolo Di Tommaso <paolo.ditommaso@gmail.com>

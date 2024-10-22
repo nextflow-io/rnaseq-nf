@@ -1,10 +1,10 @@
-version ?= v1.2.1
+version ?= v1.3.0
 
 all: build push
 
 build:
 	cp ../conda.yml .
-	docker build --output=type=docker --progress=plain --tag quay.io/nextflow/rnaseq-nf:${version} .
+	docker build --output=type=docker --progress=plain --tag docker.io/nextflow/rnaseq-nf:${version} .
 	
 push:
-	docker push quay.io/nextflow/rnaseq-nf:${version}
+	docker push docker.io/nextflow/rnaseq-nf:${version}

@@ -15,13 +15,6 @@ params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bp
 params.outdir = "results"
 params.multiqc = "$baseDir/multiqc"
 
-log.info """\
- R N A S E Q - N F   P I P E L I N E
- ===================================
- transcriptome: ${params.transcriptome}
- reads        : ${params.reads}
- outdir       : ${params.outdir}
- """
 
 // import modules
 include { RNASEQ } from './modules/rnaseq'
@@ -31,6 +24,15 @@ include { MULTIQC } from './modules/multiqc'
  * main script flow
  */
 workflow {
+
+log.info """\
+  R N A S E Q - N F   P I P E L I N E
+  ===================================
+  transcriptome: ${params.transcriptome}
+  reads        : ${params.reads}
+  outdir       : ${params.outdir}
+  """
+
   read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
   RNASEQ( params.transcriptome, read_pairs_ch )
   MULTIQC( RNASEQ.out, params.multiqc )

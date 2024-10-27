@@ -6,7 +6,7 @@ process MULTIQC {
 
     input:
     path '*'
-    path 'config'
+    path config
 
     output:
     path 'multiqc_report.html', emit: report

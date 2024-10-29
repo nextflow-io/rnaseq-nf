@@ -9,9 +9,6 @@ process MULTIQC {
     output:
     path('multiqc_report.html'), emit: report
 
-    publish:
-    report >> 'multiqc'
-
     script:
     """
     cp $config/* .

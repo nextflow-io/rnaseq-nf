@@ -37,14 +37,6 @@ params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bp
 params.outdir = "results"
 params.multiqc = "$baseDir/multiqc"
 
-log.info """\
- R N A S E Q - N F   P I P E L I N E
- ===================================
- transcriptome: ${params.transcriptome}
- reads        : ${params.reads}
- outdir       : ${params.outdir}
- """
-
 // import modules
 include { RNASEQ } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
@@ -53,17 +45,40 @@ include { MULTIQC } from './modules/multiqc'
  * main script flow
  */
 workflow {
-  read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
+  main:
+  log.info """\
+    R N A S E Q - N F   P I P E L I N E
+    ===================================
+    transcriptome: ${params.transcriptome}
+    reads        : ${params.reads}
+    outdir       : ${params.outdir}
+    """
+
+  read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true, flat: true )
   RNASEQ( params.transcriptome, read_pairs_ch )
-  MULTIQC( RNASEQ.out, params.multiqc )
+
+  samples_ch = RNASEQ.out.quant
+    | join(RNASEQ.out.fastqc)
+
+  multiqc_ch = RNASEQ.out.quant
+    | concat(RNASEQ.out.fastqc)
+    | map { _id, file -> file }
+    | collect
+  MULTIQC( multiqc_ch, params.multiqc )
+
+  publish:
+  samples_ch >> 'samples'
+  MULTIQC.out >> 'multiqc'
 }
 
 output {
-  directory params.outdir
-  mode 'copy'
-  fastqc {
+  samples {
+    path '.'
     index {
-      path 'index.csv'
+      path 'index.json'
+      mapper { id, quant, fastqc ->
+        [id: id, quant: quant, fastqc: fastqc]
+      }
     }
   }
 }

@@ -7,10 +7,10 @@ process FASTQC {
     tuple val(sample_id), path(fastq_1), path(fastq_2)
 
     output:
-    tuple val(sample_id), path("fastqc_${sample_id}_logs"), emit: logs
+    tuple val(sample_id), path('fastqc')
 
     script:
     """
-    fastqc.sh "$sample_id" "$fastq_1 $fastq_2"
+    fastqc.sh "$fastq_1 $fastq_2"
     """
 }

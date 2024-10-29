@@ -73,7 +73,7 @@ workflow {
 
 output {
   samples {
-    path '.'
+    path { id, _quant, _fastqc -> "${workflow.outputDir}/${id}" }
     index {
       path 'index.json'
       mapper { id, quant, fastqc ->

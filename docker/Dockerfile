@@ -1,16 +1,14 @@
-FROM mambaorg/micromamba
+#
+# don't waste your time with this
+# use seqera containers https://seqera.io/containers/
+#
+FROM mambaorg/micromamba:1.5.10-noble
 MAINTAINER Paolo Di Tommaso <paolo.ditommaso@gmail.com>
 
-RUN \
-   micromamba install -y -n base -c defaults -c bioconda -c conda-forge \
-      salmon=1.10.2 \
-      fastqc=0.12.1 \
-      multiqc=1.17 \
-      python=3.11 \
-      typing_extensions \
-      importlib_metadata \
-      procps-ng \
-   && micromamba clean -a -y
+COPY --chown=$MAMBA_USER:$MAMBA_USER conda.yml /tmp/conda.yml
+RUN micromamba install -y -n base -f /tmp/conda.yml \
+    && micromamba install -y -n base conda-forge::procps-ng \
+    && micromamba clean -a -y
 
 ENV PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
 USER root

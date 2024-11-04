@@ -1,10 +1,8 @@
 name: rnaseq-nf
 channels:
-  - seqera
-  - bioconda
-  - conda-forge
-  - defaults
+- conda-forge
+- bioconda
 dependencies:
-  - salmon=1.10.2
-  - fastqc=0.12.1
-  - multiqc=1.15
+- bioconda::fastqc=0.12.1
+- bioconda::multiqc=1.25
+- bioconda::salmon=1.10.3

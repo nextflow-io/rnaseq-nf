@@ -15,7 +15,7 @@ implemented with Nextflow.
 
 1. If you don't have it already install Docker in your computer. Read more [here](https://docs.docker.com/).
 
-2. Install Nextflow (version 23.04.0 or later):
+2. Install Nextflow (version 23.10.0 or later):
       
         curl -s https://get.nextflow.io | bash
 

@@ -5,6 +5,8 @@
  */
 
 
+nextflow.preview.output = true
+
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.foo` specify on the run command line `--foo some_value`.
@@ -36,4 +38,14 @@ log.info """\
   read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
   RNASEQ( params.transcriptome, read_pairs_ch )
   MULTIQC( RNASEQ.out, params.multiqc )
+}
+
+output {
+  directory params.outdir
+  mode 'copy'
+  fastqc {
+    index {
+      path 'index.csv'
+    }
+  }
 }

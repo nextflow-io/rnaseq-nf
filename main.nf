@@ -48,7 +48,7 @@ workflow {
 
   publish:
   samples_ch >> 'samples'
-  MULTIQC.out >> 'multiqc'
+  MULTIQC.out >> 'summary'
 }
 
 output {
@@ -60,5 +60,9 @@ output {
         [id: id, quant: quant, fastqc: fastqc]
       }
     }
+  }
+
+  summary {
+    path '.'
   }
 }

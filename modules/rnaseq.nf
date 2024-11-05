@@ -1,19 +1,39 @@
-params.outdir = 'results'
-
 include { INDEX } from './index'
 include { QUANT } from './quant'
 include { FASTQC } from './fastqc'
 
 workflow RNASEQ {
   take:
-    transcriptome
-    read_pairs_ch
+  pairs         : Channel<FastqPair>
+  transcriptome : Path
  
   main: 
-    INDEX(transcriptome)
-    FASTQC(read_pairs_ch)
-    QUANT(INDEX.out, read_pairs_ch)
+  transcriptome               // Path
+    |> INDEX                  // Path (future)
+    |> set { index }          // Path (future)
 
-  emit: 
-     QUANT.out | concat(FASTQC.out) | collect
+  pairs                       // Channel<FastqPair>
+    |> map { pair ->
+      let (id, fastq_1, fastq_2) = (pair.id, pair.fastq_1, pair.fastq_2)
+      let fastqc = FASTQC(id, fastq_1, fastq_2)
+      let quant = QUANT(index, id, fastq_1, fastq_2)
+      new Sample(id, fastqc, quant)
+    }                         // Channel<Sample>
+    |> set { samples }        // Channel<Sample>
+
+  emit:
+  index   : Path
+  samples : Channel<Sample>
+}
+
+record FastqPair {
+  id      : String
+  fastq_1 : Path
+  fastq_2 : Path
+}
+
+record Sample {
+  id      : String
+  fastqc  : Path
+  quant   : Path
 }

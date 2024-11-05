@@ -1,23 +1,29 @@
-#!/usr/bin/env nextflow
+#!/usr/bin/env nextflow 
 
 /*
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
+
 nextflow.preview.types = true
 
 /*
  * Default pipeline parameters. They can be overridden on the command line, e.g.
  * `params.reads` can be specified on the command line as `--reads some_value`.
  */
+
 params.reads = "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
 params.transcriptome = "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
 params.multiqc = "${projectDir}/multiqc"
 
 
+// import modules
 include { RNASEQ } from './modules/rnaseq'
 include { FastqPair ; Sample } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
 
+/* 
+ * main script flow
+ */
 workflow {
   main:
   log.info """\

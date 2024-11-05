@@ -32,6 +32,7 @@
         },
         "multiqc": {
           "type": "string",
+          "description": "Directory containing multiqc configuration",
           "fa_icon": "fas fa-folder-open",
           "default": "${projectDir}/multiqc"
         }

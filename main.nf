@@ -6,23 +6,39 @@
 
 nextflow.preview.types = true
 
-/*
- * Default pipeline parameters. They can be overridden on the command line, e.g.
- * `params.reads` can be specified on the command line as `--reads some_value`.
- */
-
-params.reads = "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
-params.transcriptome = "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
-params.multiqc = "${projectDir}/multiqc"
-
 
 // import modules
 include { RNASEQ } from './modules/rnaseq'
 include { FastqPair ; Sample } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
 
+
+/*
+ * Pipeline parameters. They can be overridden on the command line, e.g.
+ * `params.reads` can be specified as `--reads '...'`.
+ */
+params {
+  reads: String {
+    description 'The input read-pair files'
+    faIcon 'fas fa-folder-open'
+    defaultValue "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
+  }
+
+  transcriptome: String {
+    description 'The input transcriptome file'
+    faIcon 'fas fa-folder-open'
+    defaultValue "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
+  }
+
+  multiqc: String {
+    description 'Directory containing multiqc configuration'
+    faIcon 'fas fa-folder-open'
+    defaultValue "${projectDir}/multiqc"
+  }
+}
+
 /* 
- * main script flow
+ * Entry workflow
  */
 workflow {
   main:
@@ -58,6 +74,9 @@ workflow {
   summary >> 'summary'
 }
 
+/*
+ * Pipeline outputs. By default they will be saved to the 'results' directory.
+ */
 output {
   index: Path {
     path '.'

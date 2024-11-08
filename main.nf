@@ -24,13 +24,13 @@ params {
     defaultValue "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
   }
 
-  transcriptome: String {
+  transcriptome: Path {
     description 'The input transcriptome file'
     faIcon 'fas fa-folder-open'
     defaultValue "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
   }
 
-  multiqc: String {
+  multiqc: Path {
     description 'Directory containing multiqc configuration'
     faIcon 'fas fa-folder-open'
     defaultValue "${projectDir}/multiqc"
@@ -50,17 +50,18 @@ workflow {
     outdir       : ${workflow.outputDir}
     """.stripIndent()
 
-  def (index, samples) = params.reads
-    |> Channel.fromFilePairs( checkIfExists: true )         // Channel<(String,List<Path>)>
-    |> map { (id, reads) ->
-      new FastqPair(id, reads[0], reads[1])
-    }                                                       // Channel<FastqPair>
-    |> RNASEQ( file(params.transcriptome) )                 // NamedTuple(index: Path, samples: Channel<Sample>)
+  def pairs = Channel.fromFilePairs(params.reads).map { (id, reads) ->
+    new FastqPair(id, reads[0], reads[1])
+  }                                                         // Channel<FastqPair>
 
-  def summary = samples
-    |> flatMap { s -> [ s.fastqc, s.quant ] }               // Channel<Path>
-    |> collect                                              // Bag<Path> (future)
-    |> MULTIQC( file(params.multiqc) )                      // Path (future)
+  def (index, samples) = RNASEQ(pairs, params.transcriptome)
+                                                            // NamedTuple(index: Path, samples: Channel<Sample>)
+
+  def multiqc_files = samples
+    .scatter { s -> [ s.fastqc, s.quant ] }                 // Channel<Path>
+    .collect()                                              // Bag<Path> (future)
+
+  def summary = MULTIQC( multiqc_files, params.multiqc )    // Path (future)
 
   workflow.onComplete {
     log.info ( workflow.success

@@ -50,14 +50,14 @@ workflow {
     outdir       : ${workflow.outputDir}
     """.stripIndent()
 
-  let (index, samples) = params.reads
+  def (index, samples) = params.reads
     |> Channel.fromFilePairs( checkIfExists: true )         // Channel<(String,List<Path>)>
     |> map { (id, reads) ->
       new FastqPair(id, reads[0], reads[1])
     }                                                       // Channel<FastqPair>
     |> RNASEQ( file(params.transcriptome) )                 // NamedTuple(index: Path, samples: Channel<Sample>)
 
-  let summary = samples
+  def summary = samples
     |> flatMap { s -> [ s.fastqc, s.quant ] }               // Channel<Path>
     |> collect                                              // Bag<Path> (future)
     |> MULTIQC( file(params.multiqc) )                      // Path (future)

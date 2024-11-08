@@ -14,9 +14,9 @@ workflow RNASEQ {
 
   pairs                       // Channel<FastqPair>
     |> map { pair ->
-      let (id, fastq_1, fastq_2) = (pair.id, pair.fastq_1, pair.fastq_2)
-      let fastqc = FASTQC(id, fastq_1, fastq_2)
-      let quant = QUANT(index, id, fastq_1, fastq_2)
+      def (id, fastq_1, fastq_2) = (pair.id, pair.fastq_1, pair.fastq_2)
+      def fastqc = FASTQC(id, fastq_1, fastq_2)
+      def quant = QUANT(index, id, fastq_1, fastq_2)
       new Sample(id, fastqc, quant)
     }                         // Channel<Sample>
     |> set { samples }        // Channel<Sample>

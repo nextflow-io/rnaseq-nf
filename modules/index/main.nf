@@ -4,13 +4,13 @@ process INDEX {
     conda 'bioconda::salmon=1.10.3'
     
     input:
-    path transcriptome 
-
-    output:
-    path 'index' 
+    transcriptome   : Path
 
     script:
     """
     salmon index --threads $task.cpus -t $transcriptome -i index
     """
+
+    output:
+    file('index')
 }

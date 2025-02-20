@@ -38,31 +38,33 @@ workflow {
   RNASEQ( params.transcriptome, read_pairs_ch )
 
   samples_ch = RNASEQ.out.quant
-    | join(RNASEQ.out.fastqc)
+    .join(RNASEQ.out.fastqc)
+    .map { id, quant, fastqc ->
+      [id: id, quant: quant, fastqc: fastqc]
+    }
 
   multiqc_ch = RNASEQ.out.quant
-    | concat(RNASEQ.out.fastqc)
-    | map { _id, file -> file }
-    | collect
+    .concat(RNASEQ.out.fastqc)
+    .map { _id, file -> file }
+    .collect()
   MULTIQC( multiqc_ch, params.multiqc )
 
   publish:
-  samples_ch >> 'samples'
-  MULTIQC.out >> 'summary'
+  samples = samples_ch
+  summary = MULTIQC.out
 }
 
 output {
   samples {
-    path { id, _quant, _fastqc -> "${workflow.outputDir}/${id}" }
+    path { sample ->
+      sample.quant >> "${sample.id}/"
+      sample.fastqc >> "${sample.id}/"
+    }
     index {
-      path 'index.json'
-      mapper { id, quant, fastqc ->
-        [id: id, quant: quant, fastqc: fastqc]
-      }
+      path 'samples.json'
     }
   }
 
   summary {
-    path '.'
   }
 }

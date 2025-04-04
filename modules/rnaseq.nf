@@ -6,14 +6,14 @@ include { FASTQC } from './fastqc'
 
 workflow RNASEQ {
   take:
-    transcriptome
-    read_pairs_ch
+  transcriptome
+  samples_ch
  
   main: 
-    INDEX(transcriptome)
-    FASTQC(read_pairs_ch)
-    QUANT(INDEX.out, read_pairs_ch)
+  INDEX(transcriptome)
+  FASTQC(samples_ch)
+  QUANT(INDEX.out, samples_ch)
 
   emit: 
-     QUANT.out | concat(FASTQC.out) | collect
+  QUANT.out | concat(FASTQC.out) | collect
 }

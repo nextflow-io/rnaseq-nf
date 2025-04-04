@@ -7,13 +7,13 @@
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
- * given `params.foo` specify on the run command line `--foo some_value`.
+ * given `params.reads` specify on the run command line `--reads some_value`.
  */
 
-params.reads = "$baseDir/data/ggal/ggal_gut_{1,2}.fq"
-params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
+params.reads = null
+params.transcriptome = null
 params.outdir = "results"
-params.multiqc = "$baseDir/multiqc"
+params.multiqc = "$projectDir/multiqc"
 
 
 // import modules
@@ -25,15 +25,20 @@ include { MULTIQC } from './modules/multiqc'
  */
 workflow {
 
-log.info """\
-  R N A S E Q - N F   P I P E L I N E
-  ===================================
-  transcriptome: ${params.transcriptome}
-  reads        : ${params.reads}
-  outdir       : ${params.outdir}
-  """
+  log.info """\
+      R N A S E Q - N F   P I P E L I N E
+      ===================================
+      transcriptome: ${params.transcriptome}
+      reads        : ${params.reads}
+      outdir       : ${params.outdir}
+    """.stripIndent()
 
-  read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
-  RNASEQ( params.transcriptome, read_pairs_ch )
+  samples_ch = channel.fromPath(params.reads)
+    .splitCsv()
+    .map { id, fastq_1, fastq_2 ->
+      tuple(id, file(fastq_1, checkIfExists: true), file(fastq_2, checkIfExists: true))
+    }
+
+  RNASEQ( params.transcriptome, samples_ch )
   MULTIQC( RNASEQ.out, params.multiqc )
 }

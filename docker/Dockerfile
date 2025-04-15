@@ -3,7 +3,10 @@
 # use seqera containers https://seqera.io/containers/
 #
 FROM mambaorg/micromamba:1.5.10-noble
-MAINTAINER Paolo Di Tommaso <paolo.ditommaso@gmail.com>
+
+ARG MAMBA_USER=mambauser
+ENV MAMBA_USER=${MAMBA_USER}
+
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER conda.yml /tmp/conda.yml
 RUN micromamba install -y -n base -f /tmp/conda.yml \

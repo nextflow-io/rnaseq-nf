@@ -1,14 +1,14 @@
 
 process QUANT {
-    tag "$sample_id"
+    tag "$id"
     conda 'bioconda::salmon=1.10.3'
 
     input:
     path index
-    tuple val(sample_id), path(fastq_1), path(fastq_2)
+    tuple val(id), path(fastq_1), path(fastq_2)
 
     output:
-    tuple val(sample_id), path('quant')
+    tuple val(id), path('quant')
 
     script:
     """

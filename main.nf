@@ -5,22 +5,34 @@
  */
 
 nextflow.preview.output = true
-
-/*
- * Default pipeline parameters. They can be overriden on the command line eg.
- * given `params.reads` specify on the run command line `--reads some_value`.
- */
-
-params.reads = null
-params.transcriptome = null
-params.outdir = "results"
-params.multiqc = "$projectDir/multiqc"
+nextflow.preview.params = true
 
 /*
  * import modules
  */
 include { RNASEQ } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
+
+/*
+ * Pipeline parameters can be overridden on the command line,
+ * e.g. `--reads myreads.csv --transcriptome myref.fa`.
+ */
+params {
+  /**
+   * CSV file of FASTQ pairs to analyze.
+   */
+  reads
+
+  /**
+   * FASTA file for the reference transcriptome.
+   */
+  transcriptome
+
+  /**
+   * Directory containing the configuration for MultiQC.
+   */
+  multiqc = "$projectDir/multiqc"
+}
 
 /* 
  * main script flow
@@ -32,7 +44,7 @@ workflow {
       ===================================
       transcriptome: ${params.transcriptome}
       reads        : ${params.reads}
-      outdir       : ${params.outdir}
+      outdir       : ${workflow.outputDir}
     """.stripIndent()
 
   inputs_ch = channel.fromPath(params.reads)

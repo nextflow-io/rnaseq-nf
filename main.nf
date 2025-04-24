@@ -5,7 +5,6 @@
  */
 
 nextflow.preview.output = true
-nextflow.preview.params = true
 
 /*
  * import modules
@@ -13,26 +12,10 @@ nextflow.preview.params = true
 include { RNASEQ } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
 
-/*
- * Pipeline parameters can be overridden on the command line,
- * e.g. `--reads myreads.csv --transcriptome myref.fa`.
- */
-params {
-  /**
-   * CSV file of FASTQ pairs to analyze.
-   */
-  reads
-
-  /**
-   * FASTA file for the reference transcriptome.
-   */
-  transcriptome
-
-  /**
-   * Directory containing the configuration for MultiQC.
-   */
-  multiqc = "$projectDir/multiqc"
-}
+/**
+ * Directory containing the configuration for MultiQC.
+*/
+params.multiqc = "$projectDir/multiqc"
 
 /* 
  * main script flow
@@ -78,6 +61,7 @@ output {
       sample.quant >> "${sample.id}/"
       sample.fastqc >> "${sample.id}/"
     }
+    annotation { parm.annotation.split(',').collectEntries { it.split('=' )*.trim() }}
     index {
       path 'samples.json'
     }

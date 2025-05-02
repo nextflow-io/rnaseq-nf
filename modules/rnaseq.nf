@@ -8,13 +8,10 @@ workflow RNASEQ {
   transcriptome : Path
  
   main: 
-  def index = INDEX( transcriptome )    // Path (future)
-
-  def samples = pairs.map { (id, fastq_1, fastq_2) ->
-    def fastqc = FASTQC(id, fastq_1, fastq_2)
-    def quant = QUANT(index, id, fastq_1, fastq_2)
-    new Sample(id, fastqc, quant)
-  }                                     // Channel<Sample>
+  index = INDEX(transcriptome)
+  fastqc = pairs.map(FASTQC)
+  quant = pairs.map(QUANT, index: index)
+  samples = fastqc.join(quant, 'id')
 
   emit:
   index   : Path

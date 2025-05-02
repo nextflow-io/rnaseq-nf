@@ -18,23 +18,14 @@ include { MULTIQC } from './modules/multiqc'
  * `params.reads` can be specified as `--reads '...'`.
  */
 params {
-  reads: String {
-    description 'The input read-pair files'
-    faIcon 'fas fa-folder-open'
-    defaultValue "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
-  }
+  // The input read-pair files
+  reads: String = "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
 
-  transcriptome: Path {
-    description 'The input transcriptome file'
-    faIcon 'fas fa-folder-open'
-    defaultValue "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
-  }
+  // The input transcriptome file
+  transcriptome: Path = "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
 
-  multiqc: Path {
-    description 'Directory containing multiqc configuration'
-    faIcon 'fas fa-folder-open'
-    defaultValue "${projectDir}/multiqc"
-  }
+  // Directory containing multiqc configuration
+  multiqc: Path = "${projectDir}/multiqc"
 }
 
 /* 
@@ -43,36 +34,34 @@ params {
 workflow {
   main:
   log.info """\
-    R N A S E Q - N F   P I P E L I N E
-    ===================================
-    transcriptome: ${params.transcriptome}
-    reads        : ${params.reads}
-    outdir       : ${workflow.outputDir}
+      R N A S E Q - N F   P I P E L I N E
+      ===================================
+      transcriptome: ${params.transcriptome}
+      reads        : ${params.reads}
+      outdir       : ${workflow.outputDir}
     """.stripIndent()
 
-  def pairs = Channel.fromFilePairs(params.reads).map { (id, reads) ->
-    new FastqPair(id, reads[0], reads[1])
-  }                                                         // Channel<FastqPair>
-
-  def (index, samples) = RNASEQ(pairs, params.transcriptome)
-                                                            // NamedTuple(index: Path, samples: Channel<Sample>)
-
-  def multiqc_files = samples
-    .scatter { s -> [ s.fastqc, s.quant ] }                 // Channel<Path>
-    .collect()                                              // Bag<Path> (future)
-
-  def summary = MULTIQC( multiqc_files, params.multiqc )    // Path (future)
-
-  workflow.onComplete {
-    log.info ( workflow.success
-      ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
-      : "Oops .. something went wrong" )
+  pairs = Channel.fromFilePairs(params.reads).map { (id, reads) ->
+    [id: id, fastq_1: reads[0], fastq_2: reads[1]]
   }
 
+  rnaseq = RNASEQ(pairs, params.transcriptome)
+
+  multiqc_files = rnaseq.samples
+    .scatter { s -> [ s.fastqc, s.quant ] }
+    .collect()
+
+  summary = MULTIQC(multiqc_files, params.multiqc)
+
   publish:
-  index >> 'index'
-  samples >> 'samples'
-  summary >> 'summary'
+  index = rnaseq.index
+  samples = rnaseq.samples
+  summary = summary
+
+  onComplete:
+  log.info ( workflow.success
+    ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
+    : "Oops .. something went wrong" )
 }
 
 /*
@@ -83,7 +72,7 @@ output {
     path '.'
   }
 
-  samples: Sample {
+  samples: Channel<Sample> {
     path { sample -> sample.id }
     index {
       path 'samples.json'

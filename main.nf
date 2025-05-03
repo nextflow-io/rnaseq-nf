@@ -61,13 +61,13 @@ output {
       sample.quant >> "${sample.id}/"
       sample.fastqc >> "${sample.id}/"
     }
-    annotations { params.annotations ? params.annotations.split(',').collectEntries { it.split(':' )*.trim() } : null }
+    labels { params.labels ? params.labels.tokenize(',') : null }
     index {
       path 'samples.json'
     }
   }
   summary {
     path 'summary'
-    annotations { params.annotations ? params.annotations.split(',').collectEntries { it.split(':' )*.trim() } : null }
+    labels { params.labels ? params.labels.tokenize(',') : null }
   }
 }

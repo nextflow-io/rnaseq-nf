@@ -14,7 +14,7 @@ params.reads = "$baseDir/data/ggal/ggal_gut_{1,2}.fq"
 params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
 params.outdir = "results"
 params.multiqc = "$baseDir/multiqc"
-
+params.experimentId = '01'
 
 // import modules
 include { RNASEQ } from './modules/rnaseq'
@@ -35,14 +35,17 @@ workflow {
 
   read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
   RNASEQ( params.transcriptome, read_pairs_ch )
-  MULTIQC( RNASEQ.out, params.multiqc )
+  MULTIQC( RNASEQ.out.all, params.multiqc )
 
   publish:
-  logs = MULTIQC.out.report
-  samples = RNASEQ.out[0]
+  logs = MULTIQC.out
+  samples = RNASEQ.out.samples
 }
 
 output {
-  logs { path 'logs/' }
-  samples { path 'samples/'; annotations ([foo:'one'])  }
+  logs { path 'logs/'; label 'foo'  }
+  samples { path 'samples/';
+    label 'samples'
+    label "experiment-${params.experimentId}"
+  }
 }

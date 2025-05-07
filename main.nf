@@ -61,13 +61,13 @@ output {
       sample.quant >> "${sample.id}/"
       sample.fastqc >> "${sample.id}/"
     }
-    labels { params.labels ? params.labels.tokenize(',') : null }
+    label params.label
     index {
       path 'samples.json'
     }
   }
   summary {
     path 'summary'
-    labels { params.labels ? params.labels.tokenize(',') : null }
+    label params.label
   }
 }

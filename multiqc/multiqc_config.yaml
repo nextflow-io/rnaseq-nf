@@ -7,5 +7,5 @@ report_header_info:
     - Project Type: 'Nextflow demo'
 
 custom_logo_url: 'https://www.nextflow.io'
-custom_logo_title: 'Center for Genomic Regulation'
+custom_logo_title: 'Seqera'
 

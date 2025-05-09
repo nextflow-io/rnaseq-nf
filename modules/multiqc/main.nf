@@ -2,7 +2,6 @@ params.outdir = 'results'
 
 process MULTIQC {
     conda 'bioconda::multiqc=1.27.1'
-    publishDir params.outdir, mode:'copy'
 
     input:
     path '*'

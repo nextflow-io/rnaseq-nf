@@ -13,7 +13,7 @@ process MULTIQC {
     script:
     """
     cp $config/* .
-    echo "custom_logo: \$PWD/logo.png" >> multiqc_config.yaml
-    multiqc -o multiqc_report.html .
+    echo "custom_logo: \$PWD/nextflow_logo.png" >> multiqc_config.yaml
+    multiqc -n multiqc_report.html .
     """
 }

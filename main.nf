@@ -14,7 +14,7 @@ params.reads = "$baseDir/data/ggal/ggal_gut_{1,2}.fq"
 params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
 params.outdir = "results"
 params.multiqc = "$baseDir/multiqc"
-params.experimentId = '01'
+params.experimentId = '0'
 
 // import modules
 include { RNASEQ } from './modules/rnaseq'
@@ -43,8 +43,13 @@ workflow {
 }
 
 output {
-  logs { path 'logs/'; label 'foo'  }
-  samples { path 'samples/';
+  logs { 
+      path 'logs/'
+      label 'qc'
+  }
+
+  samples { 
+    path 'samples/'
     label 'samples'
     label "experiment-${params.experimentId}"
   }

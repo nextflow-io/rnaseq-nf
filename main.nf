@@ -30,7 +30,7 @@ workflow {
     ===================================
     transcriptome: ${params.transcriptome}
     reads        : ${params.reads}
-    outdir       : ${params.outdir}
+    output-dir   : ${workflow.outputDir}
     """
 
   read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 

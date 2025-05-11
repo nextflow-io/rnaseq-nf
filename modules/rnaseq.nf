@@ -1,5 +1,3 @@
-params.outdir = 'results'
-
 include { INDEX } from './index'
 include { QUANT } from './quant'
 include { FASTQC } from './fastqc'

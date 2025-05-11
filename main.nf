@@ -31,7 +31,7 @@ workflow {
     transcriptome: ${params.transcriptome}
     reads        : ${params.reads}
     output-dir   : ${workflow.outputDir}
-    """
+    """.stripIndent()
 
   read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
   RNASEQ( params.transcriptome, read_pairs_ch )
@@ -44,8 +44,8 @@ workflow {
 
 output {
   logs { 
-      path 'logs/'
-      label 'qc'
+    path 'logs/'
+    label 'qc'
   }
 
   samples { 

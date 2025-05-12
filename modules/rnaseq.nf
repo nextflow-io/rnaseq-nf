@@ -1,5 +1,3 @@
-params.outdir = 'results'
-
 include { INDEX } from './index'
 include { QUANT } from './quant'
 include { FASTQC } from './fastqc'
@@ -14,6 +12,7 @@ workflow RNASEQ {
     FASTQC(read_pairs_ch)
     QUANT(INDEX.out, read_pairs_ch)
 
-  emit: 
-     QUANT.out | concat(FASTQC.out) | collect
+  emit:
+    samples = QUANT.out
+    all = QUANT.out | concat(FASTQC.out) | collect
 }

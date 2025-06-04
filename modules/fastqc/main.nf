@@ -1,16 +1,16 @@
 
 process FASTQC {
-    tag "$sample_id"
+    tag "$id"
     conda 'bioconda::fastqc=0.12.1'
 
     input:
-    tuple val(sample_id), path(fastq_1), path(fastq_2)
+    tuple val(id), path(fastq_1), path(fastq_2)
 
     output:
-    tuple val(sample_id), path("fastqc_${sample_id}_logs")
+    tuple val(id), path("fastqc_${id}_logs")
 
     script:
     """
-    fastqc.sh "$sample_id" "$fastq_1 $fastq_2"
+    fastqc.sh "$id" "$fastq_1 $fastq_2"
     """
 }

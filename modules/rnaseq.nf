@@ -5,15 +5,28 @@ include { FASTQC } from './fastqc'
 
 workflow RNASEQ {
     take:
-    transcriptome
-    samples_ch
+    reads         : Channel<FastqPair>
+    transcriptome : Path
 
     main:
     index = INDEX(transcriptome)
-    fastqc_ch = FASTQC(samples_ch)
-    quant_ch = QUANT(index, samples_ch)
-    samples_ch = fastqc_ch.join(quant_ch)
+    fastqc_ch = reads.map(FASTQC)
+    quant_ch = reads.map(QUANT, index: index)
+    samples_ch = fastqc_ch.join(quant_ch, 'id')
 
     emit:
-    samples_ch
+    samples : Channel<Sample> = samples_ch
+    index   : Path = index
+}
+
+record FastqPair {
+  id      : String
+  fastq_1 : Path
+  fastq_2 : Path
+}
+
+record Sample {
+  id      : String
+  fastqc  : Path
+  quant   : Path
 }

@@ -4,59 +4,75 @@
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
 
-nextflow.preview.output = true
+// enable v2 operators (required for static type checking)
+nextflow.preview.operators = true
 
-/*
- * Default pipeline parameters. They can be overriden on the command line eg.
- * given `params.reads` specify on the run command line `--reads some_value`.
- */
-
-params.reads = null
-params.transcriptome = null
-params.outdir = "results"
-params.multiqc = "$projectDir/multiqc"
-
+// enable static type checking
+nextflow.preview.typeChecking = true
 
 // import modules
 include { RNASEQ } from './modules/rnaseq'
+include { FastqPair ; Sample } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
 
+/*
+ * Pipeline parameters. They can be overridden on the command line, e.g.
+ * `params.reads` can be specified as `--reads '...'`.
+ */
+params {
+  // The input read-pair files
+  reads: List<FastqPair>
+
+  // The input transcriptome file
+  transcriptome: Path
+
+  // Directory containing multiqc configuration
+  multiqc: Path = "${projectDir}/multiqc"
+}
+
 /* 
- * main script flow
+ * Entry workflow
  */
 workflow {
   main:
   log.info """\
       R N A S E Q - N F   P I P E L I N E
       ===================================
+      reads        : ${params.reads*.id.join(',')}
       transcriptome: ${params.transcriptome}
-      reads        : ${params.reads}
-      outdir       : ${params.outdir}
+      outdir       : ${workflow.outputDir}
     """.stripIndent()
 
-  inputs_ch = channel.fromPath(params.reads)
-    .splitCsv()
-    .map { id, fastq_1, fastq_2 ->
-      tuple(id, file(fastq_1, checkIfExists: true), file(fastq_2, checkIfExists: true))
-    }
-
-  samples_ch = RNASEQ( params.transcriptome, inputs_ch )
-    .map { id, fastqc, quant ->
-      [id: id, fastqc: fastqc, quant: quant]
-    }
+  (samples_ch, index) = RNASEQ( channel.fromList(params.reads), params.transcriptome )
 
   multiqc_files_ch = samples_ch
     .flatMap { sample -> [sample.fastqc, sample.quant] }
     .collect()
+
   multiqc_report = MULTIQC( multiqc_files_ch, params.multiqc )
 
   publish:
+  index = index
   samples = samples_ch
   multiqc_report = multiqc_report
+
+  onComplete:
+  log.info(
+    workflow.success
+      ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
+      : "Oops .. something went wrong"
+  )
 }
 
+/*
+ * Pipeline outputs. By default they will be saved to the 'results' directory.
+ */
 output {
-  samples {
+  index: Path {
+    path '.'
+  }
+
+  samples: Channel<Sample> {
     path { sample ->
       sample.fastqc >> "fastqc/${sample.id}"
       sample.quant >> "quant/${sample.id}"
@@ -67,6 +83,7 @@ output {
     }
   }
 
-  multiqc_report {
+  multiqc_report: Path {
+    path '.'
   }
 }

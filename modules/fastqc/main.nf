@@ -4,10 +4,13 @@ process FASTQC {
     conda 'bioconda::fastqc=0.12.1'
 
     input:
-    tuple val(id), path(fastq_1), path(fastq_2)
+    id      : String
+    fastq_1 : Path
+    fastq_2 : Path
 
     output:
-    tuple val(id), path("fastqc_${id}_logs")
+    id      : String = id
+    fastqc  : Path = file("fastqc_${id}_logs")
 
     script:
     """

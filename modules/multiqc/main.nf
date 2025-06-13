@@ -3,11 +3,11 @@ process MULTIQC {
     conda 'bioconda::multiqc=1.27.1'
 
     input:
-    path '*'
-    path config
+    inputs  : Bag<Path>
+    config  : Path
 
     output:
-    path 'multiqc_report.html', emit: report
+    file('multiqc_report.html')
 
     script:
     """

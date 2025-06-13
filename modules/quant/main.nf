@@ -4,11 +4,14 @@ process QUANT {
     conda 'bioconda::salmon=1.10.3'
 
     input:
-    path index
-    tuple val(id), path(fastq_1), path(fastq_2)
+    id      : String
+    fastq_1 : Path
+    fastq_2 : Path
+    index   : Path
 
     output:
-    tuple val(id), path("quant_${id}")
+    id      : String = id
+    quant   : Path = file("quant_${id}") 
 
     script:
     """

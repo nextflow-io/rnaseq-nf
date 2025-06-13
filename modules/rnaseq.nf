@@ -1,19 +1,19 @@
-params.outdir = 'results'
 
 include { INDEX } from './index'
 include { QUANT } from './quant'
 include { FASTQC } from './fastqc'
 
 workflow RNASEQ {
-  take:
+    take:
     transcriptome
-    read_pairs_ch
- 
-  main: 
-    INDEX(transcriptome)
-    FASTQC(read_pairs_ch)
-    QUANT(INDEX.out, read_pairs_ch)
+    samples_ch
 
-  emit: 
-     QUANT.out | concat(FASTQC.out) | collect
+    main:
+    index = INDEX(transcriptome)
+    fastqc_ch = FASTQC(samples_ch)
+    quant_ch = QUANT(index, samples_ch)
+    samples_ch = fastqc_ch.join(quant_ch)
+
+    emit:
+    samples_ch
 }

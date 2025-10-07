@@ -9,7 +9,7 @@ process MULTIQC {
     path config
 
     output:
-    path 'multiqc_report.html', emit: report
+    path 'multiqc_report.html'
 
     script:
     """

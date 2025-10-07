@@ -33,9 +33,15 @@ workflow {
       outdir       : ${params.outdir}
     """.stripIndent()
 
-    read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
-    RNASEQ(params.transcriptome, read_pairs_ch)
-    MULTIQC(RNASEQ.out, params.multiqc)
+    read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true, flat: true)
+
+    (samples_ch, index) = RNASEQ(read_pairs_ch, params.transcriptome)
+
+    multiqc_files_ch = samples_ch
+        .flatMap { id, fastqc, quant -> [fastqc, quant] }
+        .collect()
+
+    MULTIQC(multiqc_files_ch, params.multiqc)
 
     workflow.onComplete = {
         log.info(

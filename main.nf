@@ -4,16 +4,22 @@
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
 
-nextflow.preview.output = true
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.reads` specify on the run command line `--reads some_value`.
  */
 
-params.reads = null
-params.transcriptome = null
-params.multiqc = "${projectDir}/multiqc"
+params {
+    // The input read-pair files
+    reads: Path
+
+    // The input transcriptome file
+    transcriptome: Path
+
+    // Directory containing multiqc configuration
+    multiqc: Path = "${projectDir}/multiqc"
+}
 
 
 // import modules
@@ -35,6 +41,7 @@ workflow {
 
     read_pairs_ch = channel.fromPath(params.reads)
         .flatMap { csv -> csv.splitCsv() }
+        .map { row -> row as Tuple<String,String,String> }
         .map { id, fastq_1, fastq_2 ->
             tuple(id, file(fastq_1, checkIfExists: true), file(fastq_2, checkIfExists: true))
         }
@@ -42,29 +49,28 @@ workflow {
     samples_ch = RNASEQ(read_pairs_ch, params.transcriptome)
 
     multiqc_files_ch = samples_ch
-        .flatMap { id, fastqc, quant -> [fastqc, quant] }
+        .flatMap { id, fastqc, quant -> [fastqc, quant].toSet() }
         .collect()
 
     multiqc_report = MULTIQC(multiqc_files_ch, params.multiqc)
 
-    workflow.onComplete = {
-        log.info(
-            workflow.success
-                ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
-                : "Oops .. something went wrong"
-        )
-    }
-
     publish:
     samples = samples_ch.map { id, fastqc, quant -> [id: id, fastqc: fastqc, quant: quant] }
     multiqc_report = multiqc_report
+
+    onComplete:
+    log.info(
+        workflow.success
+            ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
+            : "Oops .. something went wrong"
+    )
 }
 
 /* 
  * workflow outputs
  */
 output {
-    samples {
+    samples: Channel<Map> {
         path { sample ->
             sample.fastqc >> "fastqc/${sample.id}"
             sample.quant >> "quant/${sample.id}"
@@ -75,6 +81,6 @@ output {
         }
     }
 
-    multiqc_report {
+    multiqc_report: Path {
     }
 }

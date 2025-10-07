@@ -4,8 +4,8 @@ include { FASTQC } from './fastqc'
 
 workflow RNASEQ {
     take:
-    read_pairs_ch
-    transcriptome
+    read_pairs_ch: Channel<Tuple<String,Path,Path>>
+    transcriptome: Path
 
     main:
     index = INDEX(transcriptome)
@@ -14,5 +14,5 @@ workflow RNASEQ {
     samples_ch = fastqc_ch.join(quant_ch)
 
     emit:
-    samples = samples_ch
+    samples: Channel<Tuple<String,Path,Path>> = samples_ch
 }

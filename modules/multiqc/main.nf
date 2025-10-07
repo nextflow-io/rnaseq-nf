@@ -1,13 +1,15 @@
 
+nextflow.preview.types = true
+
 process MULTIQC {
     conda 'bioconda::multiqc=1.27.1'
 
     input:
-    path '*'
-    path config
+    logs: Set<Path>
+    config: Path
 
     output:
-    path 'multiqc_report.html'
+    file('multiqc_report.html')
 
     script:
     """

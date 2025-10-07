@@ -4,14 +4,14 @@ process QUANT {
     conda 'bioconda::salmon=1.10.3'
 
     input:
+    tuple val(id), path(fastq_1), path(fastq_2)
     path index
-    tuple val(id), path(reads)
 
     output:
-    path id
+    tuple val(id), path("quant_${id}")
 
     script:
     """
-    salmon quant --threads ${task.cpus} --libType=U -i ${index} -1 ${reads[0]} -2 ${reads[1]} -o ${id}
+    salmon quant --threads ${task.cpus} --libType=U -i ${index} -1 ${fastq_1} -2 ${fastq_2} -o quant_${id}
     """
 }

@@ -1,3 +1,4 @@
+
 process INDEX {
     tag "${transcriptome.simpleName}"
     conda 'bioconda::salmon=1.10.3'

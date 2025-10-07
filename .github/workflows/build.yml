@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java_version: ['17']
+        java_version: ['21']
         nextflow_version: ['23.10']
 
     steps:
@@ -19,14 +19,15 @@ jobs:
         run: env | sort
 
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           submodules: true
 
       - name: Setup Java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
+          distribution: 'temurin'
           java-version: ${{ matrix.java_version }}
           architecture: x64
 

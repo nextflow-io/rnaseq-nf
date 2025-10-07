@@ -1,16 +1,16 @@
 
 process INDEX {
-    tag "$transcriptome.simpleName"
+    tag "${transcriptome.simpleName}"
     conda 'bioconda::salmon=1.10.3'
-    
+
     input:
-    path transcriptome 
+    path transcriptome
 
     output:
-    path 'index' 
+    path 'index'
 
     script:
     """
-    salmon index --threads $task.cpus -t $transcriptome -i index
+    salmon index --threads ${task.cpus} -t ${transcriptome} -i index
     """
 }

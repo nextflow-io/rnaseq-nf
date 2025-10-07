@@ -2,7 +2,7 @@ params.outdir = 'results'
 
 process MULTIQC {
     conda 'bioconda::multiqc=1.27.1'
-    publishDir params.outdir, mode:'copy'
+    publishDir params.outdir, mode: 'copy'
 
     input:
     path '*'
@@ -13,7 +13,7 @@ process MULTIQC {
 
     script:
     """
-    cp $config/* .
+    cp ${config}/* .
     echo "custom_logo: \$PWD/nextflow_logo.png" >> multiqc_config.yaml
     multiqc -n multiqc_report.html .
     """

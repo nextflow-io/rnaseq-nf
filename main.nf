@@ -4,16 +4,16 @@
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
 
+nextflow.preview.output = true
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
- * given `params.foo` specify on the run command line `--foo some_value`.
+ * given `params.reads` specify on the run command line `--reads some_value`.
  */
 
-params.reads = "${baseDir}/data/ggal/ggal_gut_{1,2}.fq"
-params.transcriptome = "${baseDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
-params.outdir = "results"
-params.multiqc = "${baseDir}/multiqc"
+params.reads = null
+params.transcriptome = null
+params.multiqc = "${projectDir}/multiqc"
 
 
 // import modules
@@ -24,28 +24,57 @@ include { MULTIQC } from './modules/multiqc'
  * main script flow
  */
 workflow {
-
+    main:
     log.info """\
       R N A S E Q - N F   P I P E L I N E
       ===================================
       transcriptome: ${params.transcriptome}
       reads        : ${params.reads}
-      outdir       : ${params.outdir}
+      outdir       : ${workflow.outputDir}
     """.stripIndent()
 
-    read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true, flat: true)
+    read_pairs_ch = channel.fromPath(params.reads)
+        .flatMap { csv -> csv.splitCsv() }
+        .map { id, fastq_1, fastq_2 ->
+            tuple(id, file(fastq_1, checkIfExists: true), file(fastq_2, checkIfExists: true))
+        }
 
-    (fastqc_ch, quant_ch) = RNASEQ(read_pairs_ch, params.transcriptome)
+    samples_ch = RNASEQ(read_pairs_ch, params.transcriptome)
 
-    multiqc_files_ch = fastqc_ch.mix(quant_ch).collect()
+    multiqc_files_ch = samples_ch
+        .flatMap { id, fastqc, quant -> [fastqc, quant] }
+        .collect()
 
-    MULTIQC(multiqc_files_ch, params.multiqc)
+    multiqc_report = MULTIQC(multiqc_files_ch, params.multiqc)
 
     workflow.onComplete = {
         log.info(
             workflow.success
-                ? "\nDone! Open the following report in your browser --> ${params.outdir}/multiqc_report.html\n"
+                ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
                 : "Oops .. something went wrong"
         )
+    }
+
+    publish:
+    samples = samples_ch.map { id, fastqc, quant -> [id: id, fastqc: fastqc, quant: quant] }
+    multiqc_report = multiqc_report
+}
+
+/* 
+ * workflow outputs
+ */
+output {
+    samples {
+        path { sample ->
+            sample.fastqc >> "fastqc/${sample.id}"
+            sample.quant >> "quant/${sample.id}"
+        }
+        index {
+            path 'samples.csv'
+            header true
+        }
+    }
+
+    multiqc_report {
     }
 }

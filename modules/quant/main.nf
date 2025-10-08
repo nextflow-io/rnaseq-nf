@@ -8,7 +8,7 @@ process QUANT {
     path index
 
     output:
-    tuple val(id), path("quant_${id}")
+    path "quant_${id}"
 
     script:
     """

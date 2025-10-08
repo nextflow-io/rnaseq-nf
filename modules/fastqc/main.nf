@@ -9,7 +9,7 @@ process FASTQC {
     tuple val(id), path(fastq_1), path(fastq_2)
 
     output:
-    tuple val(id), path("fastqc_${id}_logs")
+    path "fastqc_${id}_logs"
 
     script:
     """

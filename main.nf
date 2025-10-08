@@ -35,11 +35,9 @@ workflow {
 
     read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true, flat: true)
 
-    (samples_ch, index) = RNASEQ(read_pairs_ch, params.transcriptome)
+    (fastqc_ch, quant_ch) = RNASEQ(read_pairs_ch, params.transcriptome)
 
-    multiqc_files_ch = samples_ch
-        .flatMap { id, fastqc, quant -> [fastqc, quant] }
-        .collect()
+    multiqc_files_ch = fastqc_ch.mix(quant_ch).collect()
 
     MULTIQC(multiqc_files_ch, params.multiqc)
 

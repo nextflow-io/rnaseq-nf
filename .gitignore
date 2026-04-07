@@ -2,3 +2,6 @@
 .idea/*
 work/*
 results
+.nf-test/
+.nf-test.log
+nf-*-reports.tsv

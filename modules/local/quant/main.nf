@@ -5,11 +5,18 @@ process QUANT {
     conda 'bioconda::salmon=1.10.3'
 
     input:
-    tuple(id: String, fastq_1: Path, fastq_2: Path)
+    record(
+        id: String,
+        fastq_1: Path,
+        fastq_2: Path
+    )
     index: Path
 
     output:
-    quant: Tuple<String, Path> = tuple(id, file("quant_${id}"))
+    quant = record(
+        id: id,
+        quant: file("quant_${id}")
+    )
 
     script:
     """

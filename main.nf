@@ -2,6 +2,12 @@
 
 nextflow.preview.types = true
 
+record SampleReadPair {
+    id: String
+    fastq_1: Path
+    fastq_2: Path
+}
+
 record SampleArtifacts {
     id: String
     fastqc: Path
@@ -44,13 +50,13 @@ workflow {
       outputDir    : ${workflow.outputDir}
     """.stripIndent()
 
-    read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true, flat: true)
+    read_pairs_ch = channel
+        .fromFilePairs(params.reads, checkIfExists: true, flat: true)
+        .map { id: String, fastq_1: Path, fastq_2: Path ->
+            record(id: id, fastq_1: fastq_1, fastq_2: fastq_2)
+        }
 
-    (fastqc_ch, quant_ch) = RNASEQ(read_pairs_ch, params.transcriptome)
-
-    samples_ch = fastqc_ch
-        .join(quant_ch, by: 0)
-        .map { id: String, fastqc: Path, quant: Path -> record(id: id, fastqc: fastqc, quant: quant) }
+    samples_ch = RNASEQ(read_pairs_ch, params.transcriptome)
 
     multiqc_files_ch = samples_ch
         .flatMap { sample ->

@@ -5,10 +5,17 @@ process FASTQC {
     conda 'bioconda::fastqc=0.12.1'
 
     input:
-    tuple(id: String, fastq_1: Path, fastq_2: Path)
+    record(
+        id: String,
+        fastq_1: Path,
+        fastq_2: Path
+    )
 
     output:
-    logs: Tuple<String, Path> = tuple(id, file("fastqc_${id}_logs"))
+    logs = record(
+        id: id,
+        fastqc: file("fastqc_${id}_logs")
+    )
 
     script:
     """

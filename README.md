@@ -80,6 +80,20 @@ This repository is now tuned as a small local-first example for agentic developm
 If you want to run it on HPC or cloud executors, add a separate config overlay rather than
 re-expanding the built-in profile list.
 
+## Data lineage
+
+Data lineage is enabled in `nextflow.config` via `lineage.enabled = true`, so recent Nextflow
+versions will record workflow runs, task executions, and published outputs in a local `.lineage/`
+store by default.
+
+Useful commands after a run:
+
+```bash
+nextflow lineage list
+nextflow lineage render <LID>
+```
+
+This feature is experimental in Nextflow and was introduced in Nextflow 25.04, so use a compatible recent release when exploring lineage metadata.
 
 ## Components 
 

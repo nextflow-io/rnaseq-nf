@@ -1,4 +1,3 @@
-
 nextflow.preview.types = true
 
 process INDEX {

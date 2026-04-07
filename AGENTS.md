@@ -22,8 +22,8 @@ Make **one commit per logical fix**. Do not bundle unrelated cleanups together.
 
 - `main.nf` — top-level pipeline entrypoint
 - `nextflow.config` — pipeline config, manifest, and execution profiles
-- `modules/rnaseq.nf` — orchestrating workflow used by `main.nf`
-- `modules/*/main.nf` — process modules (`fastqc`, `index`, `quant`, `multiqc`)
+- `subworkflows/local/rnaseq/main.nf` — orchestrating subworkflow used by `main.nf`
+- `modules/local/*/main.nf` — process modules (`fastqc`, `index`, `quant`, `multiqc`)
 - `nextflow_schema.json` — pipeline parameter schema
 - `.github/workflows/build.yml` — CI workflow
 - `multiqc/` — MultiQC assets/config

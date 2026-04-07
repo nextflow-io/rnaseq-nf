@@ -1,8 +1,8 @@
 nextflow.preview.types = true
 
-include { INDEX } from './index'
-include { QUANT } from './quant'
-include { FASTQC } from './fastqc'
+include { INDEX } from '../../../modules/local/index'
+include { QUANT } from '../../../modules/local/quant'
+include { FASTQC } from '../../../modules/local/fastqc'
 
 workflow RNASEQ {
     take:

@@ -20,8 +20,8 @@ params {
 
 
 // import modules
-include { RNASEQ } from './modules/rnaseq'
-include { MULTIQC } from './modules/multiqc'
+include { RNASEQ } from './subworkflows/local/rnaseq'
+include { MULTIQC } from './modules/local/multiqc'
 
 /* 
  * main script flow

@@ -1,5 +1,7 @@
 #!/usr/bin/env nextflow 
 
+nextflow.preview.types = true
+
 /*
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
@@ -41,7 +43,13 @@ workflow {
 
     (fastqc_ch, quant_ch) = RNASEQ(read_pairs_ch, params.transcriptome)
 
-    multiqc_files_ch = fastqc_ch.mix(quant_ch).collect()
+    samples_ch = fastqc_ch
+        .join(quant_ch)
+        .map { id, fastqc, quant -> [id: id, fastqc: fastqc, quant: quant] }
+
+    multiqc_files_ch = samples_ch
+        .flatMap { sample -> [sample.fastqc, sample.quant] }
+        .collect()
 
     MULTIQC(multiqc_files_ch, params.multiqc)
 

@@ -1,15 +1,17 @@
 params.outdir = 'results'
 
+nextflow.preview.types = true
+
 process FASTQC {
     tag "${id}"
     conda 'bioconda::fastqc=0.12.1'
     publishDir params.outdir, mode: 'copy'
 
     input:
-    tuple val(id), path(fastq_1), path(fastq_2)
+    tuple(id: String, fastq_1: Path, fastq_2: Path)
 
     output:
-    path "fastqc_${id}_logs"
+    logs: Tuple<String, Path> = tuple(id, file("fastqc_${id}_logs"))
 
     script:
     """

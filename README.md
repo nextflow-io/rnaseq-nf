@@ -13,15 +13,15 @@ implemented with Nextflow.
 
 ## Quickstart 
 
-1. If you don't have it already install Docker in your computer. Read more [here](https://docs.docker.com/).
+1. If you don't have it already install Docker in your computer. This example uses Docker as the local container runtime for Wave. Read more [here](https://docs.docker.com/).
 
 2. Install Nextflow (version 23.10.0 or later):
       
         curl -s https://get.nextflow.io | bash
 
-3. Launch the pipeline execution: 
+3. Launch the pipeline execution with Wave-managed containers: 
 
-        ./nextflow run nextflow-io/rnaseq-nf -with-docker
+        ./nextflow run nextflow-io/rnaseq-nf
         
 4. When the execution completes open in your browser the report generated at the following path:
 
@@ -30,7 +30,20 @@ implemented with Nextflow.
 You can see an example report at the following [link](http://multiqc.info/examples/rna-seq/multiqc_report.html).	
 	
 Note: the very first time you execute it, it will take a few minutes to download the pipeline 
-from this GitHub repository and the associated Docker images needed to execute the pipeline.  
+from this GitHub repository and let Wave provision the containers needed to execute the workflow.  
+
+## Profiles
+
+This example intentionally keeps only a small set of profiles:
+
+- `all-reads` — convenience profile that runs the full bundled example dataset
+
+Examples:
+
+```bash
+./nextflow run .
+./nextflow run . -profile all-reads
+```
 
 ## Pipeline flowchart
 
@@ -61,33 +74,11 @@ flowchart TD
     p8 --> p9
 ```
 
-## Cluster support
+## Execution notes
 
-RNASeq-NF execution relies on [Nextflow](http://www.nextflow.io) framework which provides an 
-abstraction between the pipeline functional logic and the underlying processing system.
-
-This allows the execution of the pipeline in a single computer or in a HPC cluster without modifying it.
-
-Currently the following resource manager platforms are supported:
-
-  + Univa Grid Engine (UGE)
-  + Platform LSF
-  + SLURM
-  + PBS/Torque
-
-
-By default the pipeline is parallelized by spawning multiple threads in the machine where the script is launched.
-
-To submit the execution to a UGE cluster create a file named `nextflow.config` in the directory
-where the pipeline is going to be executed with the following content:
-
-    process {
-      executor='uge'
-      queue='<queue name>'
-    }
-
-To lean more about the avaible settings and the configuration file read the 
-Nextflow [documentation](http://www.nextflow.io/docs/latest/config.html).
+This repository is now tuned as a small local-first example for agentic development work.
+If you want to run it on HPC or cloud executors, add a separate config overlay rather than
+re-expanding the built-in profile list.
 
 
 ## Components 

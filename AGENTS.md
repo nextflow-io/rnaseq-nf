@@ -28,22 +28,21 @@ Make **one commit per logical fix**. Do not bundle unrelated cleanups together.
 - `.github/workflows/build.yml` — CI workflow
 - `multiqc/` — MultiQC assets/config
 - `data/ggal/` — example input data
-- `docker/` — container build assets
 
 ## Local validation
 
 Use the repo root as the working directory.
 
-### Basic pipeline run
+### Recommended pipeline run
 
 ```bash
-nextflow run . -profile docker
+nextflow run .
 ```
 
-### Wave profile
+### Full bundled dataset
 
 ```bash
-nextflow run . -profile docker,wave
+nextflow run . -profile all-reads
 ```
 
 ### Common checks after edits
@@ -52,7 +51,7 @@ After modifying workflow code, prefer to run:
 
 ```bash
 git diff --stat
-nextflow run . -profile docker
+nextflow run .
 ```
 
 If you touch CI, also inspect:
@@ -79,6 +78,7 @@ When auditing or modernizing this repository, check for:
 - Keep docs aligned with actual commands and file locations.
 - Prefer deterministic, cheap-to-compute signals that a scanner could later reuse.
 - Call out any discovered legacy patterns in commit messages or follow-up notes.
+- Prefer adding one-off executor or cloud settings in external config overlays instead of expanding the built-in profile list.
 
 ## Known current modernization candidates
 

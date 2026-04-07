@@ -1,8 +1,0 @@
-name: rnaseq-nf
-channels:
-- conda-forge
-- bioconda
-dependencies:
-- bioconda::fastqc=0.12.1
-- bioconda::multiqc=1.25
-- bioconda::salmon=1.10.3

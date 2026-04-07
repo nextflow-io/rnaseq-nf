@@ -10,10 +10,12 @@
  * given `params.foo` specify on the run command line `--foo some_value`.
  */
 
-params.reads = "${baseDir}/data/ggal/ggal_gut_{1,2}.fq"
-params.transcriptome = "${baseDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
-params.outdir = "results"
-params.multiqc = "${baseDir}/multiqc"
+params {
+    reads: String = "${baseDir}/data/ggal/ggal_gut_{1,2}.fq"
+    transcriptome: Path = file("${baseDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa")
+    outdir: String = 'results'
+    multiqc: Path = file("${baseDir}/multiqc")
+}
 
 
 // import modules

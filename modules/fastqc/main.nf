@@ -1,5 +1,3 @@
-params.outdir = 'results'
-
 nextflow.preview.types = true
 
 process FASTQC {

@@ -5,7 +5,6 @@ nextflow_pipeline {
 
     test("runs successfully with bundled example inputs") {
 
-        options "-stub-run"
 
         when {
             params {

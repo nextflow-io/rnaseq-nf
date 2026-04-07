@@ -25,7 +25,7 @@ To intentionally refresh snapshots:
 nf-test test --update-snapshot tests/default/main.nf.test
 ```
 
-The default test uses the `conda` profile from `nf-test.config` and runs with `-stub-run` to keep smoke coverage lightweight.
+The default test uses the `conda` profile from `nf-test.config` and executes the real pipeline rather than a stub run.
 
 ## Scope
 

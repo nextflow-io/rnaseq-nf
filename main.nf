@@ -58,6 +58,7 @@ workflow {
             [typedSample.fastqc, typedSample.quant]
         }
         .collect()
+        .map { logs -> logs.toSet() }
 
     multiqc_report_ch = MULTIQC(multiqc_files_ch, params.multiqc)
 

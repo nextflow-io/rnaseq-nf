@@ -4,20 +4,12 @@ nextflow_pipeline {
     script "../../main.nf"
 
     test("runs successfully with bundled example inputs") {
-
-
-        when {
-            params {
-                outdir = "results"
-            }
-        }
-
         then {
             assert workflow.success
             assert snapshot(
                 workflow.exitStatus,
                 workflow.trace.succeeded().size(),
-                path(params.outdir).list().collect { it.getFileName().toString() }.sort()
+                path("$launchDir/results").list().collect { it.getFileName().toString() }.sort()
             ).match()
         }
     }

@@ -15,7 +15,6 @@ nextflow.preview.types = true
 params {
     reads: String = "${baseDir}/data/ggal/ggal_gut_{1,2}.fq"
     transcriptome: Path = file("${baseDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa")
-    outdir: String = 'results'
     multiqc: Path = file("${baseDir}/multiqc")
 }
 
@@ -36,7 +35,7 @@ workflow {
       ===================================
       transcriptome: ${params.transcriptome}
       reads        : ${params.reads}
-      outdir       : ${params.outdir}
+      outputDir    : ${workflow.outputDir}
     """.stripIndent()
 
     read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true, flat: true)
@@ -51,12 +50,33 @@ workflow {
         .flatMap { sample -> [sample.fastqc, sample.quant] }
         .collect()
 
-    MULTIQC(multiqc_files_ch, params.multiqc)
+    multiqc_report_ch = MULTIQC(multiqc_files_ch, params.multiqc)
+
+    publish:
+    samples = samples_ch
+    multiqc_report = multiqc_report_ch
 
     onComplete:
         log.info(
             workflow.success
-                ? "\nDone! Open the following report in your browser --> ${params.outdir}/multiqc_report.html\n"
+                ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
                 : "Oops .. something went wrong"
         )
+}
+
+output {
+    samples {
+        path { sample ->
+            sample.fastqc >> "fastqc/${sample.id}"
+            sample.quant >> "quant/${sample.id}"
+        }
+        index {
+            path 'samples.csv'
+            header true
+        }
+    }
+
+    multiqc_report {
+        path '.'
+    }
 }

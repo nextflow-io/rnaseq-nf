@@ -4,11 +4,6 @@
 
 This module aggregates FastQC and quantification outputs into a single `multiqc_report.html` report.
 
-## Contract
-
-- input: `Set<Path> logs`, `Path config`
-- output: `Path multiqc_report.html`
-
 ## Editing guidance
 
 - The `config` input is expected to be a directory of MultiQC assets copied into the task workdir.

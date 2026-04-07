@@ -4,11 +4,6 @@
 
 This module builds a Salmon index from the transcriptome FASTA.
 
-## Contract
-
-- input: `Path transcriptome`
-- output: `Path index`
-
 ## Editing guidance
 
 - Keep this module limited to index generation only.

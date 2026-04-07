@@ -95,6 +95,13 @@ nextflow lineage render <LID>
 
 This feature is experimental in Nextflow and was introduced in Nextflow 25.04, so use a compatible recent release when exploring lineage metadata.
 
+## nf-schema integration
+
+This example keeps nf-schema usage intentionally minimal:
+
+- parameter validation via `validateParameters()`
+- parameter summary logging via `paramsSummaryLog(workflow)`
+
 ## Components 
 
 RNASeq-NF uses the following software components and tools: 

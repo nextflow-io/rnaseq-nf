@@ -25,10 +25,16 @@ record SampleArtifacts {
  */
 
 params {
+    outdir: String = 'results'
     reads: String = "${baseDir}/data/ggal/ggal_gut_{1,2}.fq"
     transcriptome: Path = file("${baseDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa")
     multiqc: Path = file("${baseDir}/multiqc")
 }
+
+include {
+    paramsSummaryLog
+    validateParameters
+} from 'plugin/nf-schema'
 
 
 // import modules
@@ -42,13 +48,8 @@ workflow {
 
     main:
 
-    log.info """\
-      R N A S E Q - N F   P I P E L I N E
-      ===================================
-      transcriptome: ${params.transcriptome}
-      reads        : ${params.reads}
-      outputDir    : ${workflow.outputDir}
-    """.stripIndent()
+    validateParameters()
+    log.info paramsSummaryLog(workflow)
 
     read_pairs_ch = channel
         .fromFilePairs(params.reads, checkIfExists: true, flat: true)

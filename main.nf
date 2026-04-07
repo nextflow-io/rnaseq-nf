@@ -25,6 +25,8 @@ include { MULTIQC } from './modules/multiqc'
  */
 workflow {
 
+    main:
+
     log.info """\
       R N A S E Q - N F   P I P E L I N E
       ===================================
@@ -41,11 +43,10 @@ workflow {
 
     MULTIQC(multiqc_files_ch, params.multiqc)
 
-    workflow.onComplete = {
+    onComplete:
         log.info(
             workflow.success
                 ? "\nDone! Open the following report in your browser --> ${params.outdir}/multiqc_report.html\n"
                 : "Oops .. something went wrong"
         )
-    }
 }

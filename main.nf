@@ -2,6 +2,12 @@
 
 nextflow.preview.types = true
 
+record SampleArtifacts {
+    id: String
+    fastqc: Path
+    quant: Path
+}
+
 /*
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
@@ -43,11 +49,14 @@ workflow {
     (fastqc_ch, quant_ch) = RNASEQ(read_pairs_ch, params.transcriptome)
 
     samples_ch = fastqc_ch
-        .join(quant_ch)
-        .map { id, fastqc, quant -> [id: id, fastqc: fastqc, quant: quant] }
+        .join(quant_ch, by: 0)
+        .map { id: String, fastqc: Path, quant: Path -> record(id: id, fastqc: fastqc, quant: quant) }
 
     multiqc_files_ch = samples_ch
-        .flatMap { sample -> [sample.fastqc, sample.quant] }
+        .flatMap { sample ->
+            def typedSample: SampleArtifacts = sample
+            [typedSample.fastqc, typedSample.quant]
+        }
         .collect()
 
     multiqc_report_ch = MULTIQC(multiqc_files_ch, params.multiqc)

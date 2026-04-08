@@ -1,0 +1,18 @@
+{
+  "product": "@yourorg/agent",
+  "packageVersion": "1.4.0",
+  "platform": "linux",
+  "arch": "arm64",
+  "engine": {
+    "version": "1.4.0",
+    "abi": 3,
+    "binary": "bin/youragent"
+  },
+  "parsers": {
+    "root": "parsers",
+    "manifest": "parsers/manifest.json",
+    "count": 0,
+    "setVersion": "2025.02"
+  },
+  "libc": "glibc"
+}

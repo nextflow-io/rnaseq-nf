@@ -1,0 +1,18 @@
+{
+  "setVersion": "2025.02",
+  "engineAbi": 3,
+  "languages": {
+    "javascript": {
+      "path": "javascript/parser.so",
+      "metadata": "javascript/metadata.json",
+      "queries": "javascript/queries",
+      "extensions": [".js", ".mjs", ".cjs", ".jsx"]
+    },
+    "typescript": {
+      "path": "typescript/parser.so",
+      "metadata": "typescript/metadata.json",
+      "queries": "typescript/queries",
+      "extensions": [".ts", ".tsx", ".mts", ".cts"]
+    }
+  }
+}

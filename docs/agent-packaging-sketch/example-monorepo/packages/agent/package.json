@@ -1,0 +1,31 @@
+{
+  "name": "@yourorg/agent",
+  "version": "1.4.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "youragent": "bin/youragent.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "postinstall": "node ./scripts/postinstall.js"
+  },
+  "optionalDependencies": {
+    "@yourorg/agent-darwin-arm64": "1.4.0",
+    "@yourorg/agent-darwin-x64": "1.4.0",
+    "@yourorg/agent-linux-x64-gnu": "1.4.0",
+    "@yourorg/agent-linux-arm64-gnu": "1.4.0",
+    "@yourorg/agent-linux-x64-musl": "1.4.0",
+    "@yourorg/agent-win32-x64-msvc": "1.4.0",
+    "@yourorg/agent-win32-arm64-msvc": "1.4.0"
+  },
+  "dependencies": {
+    "detect-libc": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "^5.8.0"
+  }
+}

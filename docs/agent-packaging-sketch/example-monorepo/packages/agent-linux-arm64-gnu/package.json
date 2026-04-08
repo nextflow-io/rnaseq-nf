@@ -1,0 +1,14 @@
+{
+  "name": "@yourorg/agent-linux-arm64-gnu",
+  "version": "1.4.0",
+  "main": "index.js",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "libc": [
+    "glibc"
+  ]
+}

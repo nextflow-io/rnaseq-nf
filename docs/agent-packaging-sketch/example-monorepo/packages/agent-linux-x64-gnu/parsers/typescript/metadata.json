@@ -1,0 +1,19 @@
+{
+  "language": "typescript",
+  "displayName": "TypeScript",
+  "grammarVersion": "0.23.2",
+  "parserAbi": 7,
+  "engineAbi": 3,
+  "fileExtensions": [".ts", ".tsx", ".mts", ".cts"],
+  "queries": {
+    "highlights": "queries/highlights.scm",
+    "locals": "queries/locals.scm",
+    "injections": "queries/injections.scm",
+    "tags": "queries/tags.scm"
+  },
+  "license": "LICENSE",
+  "source": {
+    "name": "tree-sitter-typescript",
+    "revision": "c8f6d52"
+  }
+}

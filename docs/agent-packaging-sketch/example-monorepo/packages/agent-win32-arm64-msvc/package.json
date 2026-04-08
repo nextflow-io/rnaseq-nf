@@ -1,0 +1,11 @@
+{
+  "name": "@yourorg/agent-win32-arm64-msvc",
+  "version": "1.4.0",
+  "main": "index.js",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "arm64"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@yourorg/agent-darwin-x64",
+  "version": "1.4.0",
+  "main": "index.js",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ]
+}

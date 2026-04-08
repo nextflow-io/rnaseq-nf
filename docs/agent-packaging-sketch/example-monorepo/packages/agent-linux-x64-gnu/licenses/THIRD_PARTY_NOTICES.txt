@@ -1,0 +1,3 @@
+Third-party notices placeholder.
+- tree-sitter-javascript
+- tree-sitter-typescript

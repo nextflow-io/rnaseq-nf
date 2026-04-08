@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "placeholder native engine binary"
+echo "argv: $*"
+echo "parser root: ${YOURAGENT_PARSER_ROOT:-unset}"
+echo "parser manifest: ${YOURAGENT_PARSER_MANIFEST:-unset}"

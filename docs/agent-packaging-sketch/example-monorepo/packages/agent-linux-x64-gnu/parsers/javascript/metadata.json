@@ -1,0 +1,19 @@
+{
+  "language": "javascript",
+  "displayName": "JavaScript",
+  "grammarVersion": "0.23.1",
+  "parserAbi": 7,
+  "engineAbi": 3,
+  "fileExtensions": [".js", ".mjs", ".cjs", ".jsx"],
+  "queries": {
+    "highlights": "queries/highlights.scm",
+    "locals": "queries/locals.scm",
+    "injections": "queries/injections.scm",
+    "tags": "queries/tags.scm"
+  },
+  "license": "LICENSE",
+  "source": {
+    "name": "tree-sitter-javascript",
+    "revision": "9c0f0d4"
+  }
+}

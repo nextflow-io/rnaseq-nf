@@ -1,0 +1,6 @@
+{
+  "bin/youragent": "sha256-placeholder-engine",
+  "parsers/manifest.json": "sha256-placeholder-parser-manifest",
+  "parsers/javascript/parser.so": "sha256-placeholder-js-parser",
+  "parsers/typescript/parser.so": "sha256-placeholder-ts-parser"
+}

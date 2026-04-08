@@ -1,0 +1,12 @@
+{
+  "name": "@yourorg/agent-monorepo-sketch",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm --filter @yourorg/agent build",
+    "check": "pnpm --filter @yourorg/agent typecheck"
+  }
+}

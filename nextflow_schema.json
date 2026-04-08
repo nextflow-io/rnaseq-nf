@@ -25,8 +25,8 @@
           "mimetype": "text/csv",
           "schema": "assets/schema_input.json",
           "pattern": "^\\S+\\.csv$",
-          "description": "Path to the samplesheet CSV containing sample identifiers and paired FASTQ files.",
-          "help_text": "Provide a CSV file with the columns `sample`, `fastq_1`, and `fastq_2`. Relative FASTQ paths are resolved from the samplesheet location.",
+          "description": "Path to the samplesheet CSV containing sample identifiers and FASTQ files. `fastq_2` is optional for single-end reads.",
+          "help_text": "Provide a CSV file with the columns `sample`, `fastq_1`, and optionally `fastq_2`. Relative FASTQ paths are resolved from the samplesheet location.",
           "fa_icon": "fas fa-file-csv",
           "default": "${projectDir}/data/samplesheet.csv",
           "errorMessage": "The input must be a valid CSV file path with no spaces, ending in '.csv', and must exist."

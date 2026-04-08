@@ -35,20 +35,27 @@ from this GitHub repository and let Wave provision the containers needed to exec
 ## Samplesheet input
 
 The pipeline now accepts an input CSV via `--input`, with the repository default pointing to `data/samplesheet.csv`.
-The samplesheet must contain the following header row:
+The samplesheet uses the following header row:
 
 ```csv
 sample,fastq_1,fastq_2
 ```
 
-Example:
+Paired-end example:
 
 ```csv
 sample,fastq_1,fastq_2
 ggal_gut,ggal/ggal_gut_1.fq,ggal/ggal_gut_2.fq
 ```
 
-Relative FASTQ paths are resolved from the directory containing the samplesheet, which makes it easy to keep a portable `samplesheet.csv` alongside your data.
+Single-end example (`fastq_2` left blank):
+
+```csv
+sample,fastq_1,fastq_2
+ggal_gut,ggal/ggal_gut_1.fq,
+```
+
+Relative FASTQ paths are resolved from the directory containing the samplesheet, which makes it easy to keep a portable `samplesheet.csv` alongside your data. The pipeline accepts both paired-end and single-end rows.
 
 ## Profiles
 

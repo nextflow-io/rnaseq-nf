@@ -8,7 +8,7 @@ process FASTQC {
     record(
         id: String,
         fastq_1: Path,
-        fastq_2: Path
+        fastq_2: Path?
     )
 
     output:
@@ -18,7 +18,8 @@ process FASTQC {
     )
 
     script:
+    def reads = fastq_2 ? "${fastq_1} ${fastq_2}" : "${fastq_1}"
     """
-    fastqc.sh "${id}" "${fastq_1} ${fastq_2}"
+    fastqc.sh "${id}" "${reads}"
     """
 }

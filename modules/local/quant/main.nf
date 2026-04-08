@@ -8,7 +8,7 @@ process QUANT {
     record(
         id: String,
         fastq_1: Path,
-        fastq_2: Path
+        fastq_2: Path?
     )
     index: Path
 
@@ -19,7 +19,8 @@ process QUANT {
     )
 
     script:
+    def readArgs = fastq_2 ? "-1 ${fastq_1} -2 ${fastq_2}" : "-r ${fastq_1}"
     """
-    salmon quant --threads ${task.cpus} --libType=U -i ${index} -1 ${fastq_1} -2 ${fastq_2} -o quant_${id}
+    salmon quant --threads ${task.cpus} --libType=U -i ${index} ${readArgs} -o quant_${id}
     """
 }

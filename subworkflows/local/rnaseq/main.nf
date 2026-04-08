@@ -1,9 +1,9 @@
 nextflow.preview.types = true
 
-record SampleReadPair {
+record SampleReads {
     id: String
     fastq_1: Path
-    fastq_2: Path
+    fastq_2: Path?
 }
 
 record SampleArtifacts {
@@ -18,7 +18,7 @@ include { FASTQC } from '../../../modules/local/fastqc'
 
 workflow RNASEQ {
     take:
-    read_pairs_ch: Channel<SampleReadPair>
+    read_pairs_ch: Channel<SampleReads>
     transcriptome: Path
 
     main:

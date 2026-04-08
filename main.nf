@@ -2,10 +2,10 @@
 
 nextflow.preview.types = true
 
-record SampleReadPair {
+record SampleReads {
     id: String
     fastq_1: Path
-    fastq_2: Path
+    fastq_2: Path?
 }
 
 record SampleArtifacts {
@@ -41,9 +41,12 @@ include {
 include { RNASEQ } from './subworkflows/local/rnaseq'
 include { MULTIQC } from './modules/local/multiqc'
 
-Path resolveSamplePath(Path samplesheetDir, String samplePath) {
+def resolveSamplePath(Path samplesheetDir, String samplePath, boolean required = true) {
     def rawPath = samplePath?.trim()
-    assert rawPath : 'Encountered an empty FASTQ path in the samplesheet'
+    if( !rawPath ) {
+        assert !required : 'Encountered an empty optional FASTQ path in the samplesheet'
+        return null
+    }
 
     def candidate = file(rawPath)
     def resolved = candidate.isAbsolute() ? candidate : samplesheetDir.resolve(rawPath)
@@ -70,7 +73,7 @@ workflow {
             record(
                 id: row.sample as String,
                 fastq_1: resolveSamplePath(samplesheetDir, row.fastq_1 as String),
-                fastq_2: resolveSamplePath(samplesheetDir, row.fastq_2 as String)
+                fastq_2: resolveSamplePath(samplesheetDir, row.fastq_2 as String, false)
             )
         }
 

@@ -22,16 +22,18 @@
         "errorMessage": "FASTQ read 1 must be provided, cannot contain spaces, and must end with .fq, .fastq, .fq.gz, or .fastq.gz"
       },
       "fastq_2": {
-        "type": "string",
+        "type": [
+          "string",
+          "null"
+        ],
         "format": "file-path",
-        "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q(\\.gz)?$",
-        "errorMessage": "FASTQ read 2 must be provided, cannot contain spaces, and must end with .fq, .fastq, .fq.gz, or .fastq.gz"
+        "pattern": "^$|^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q(\\.gz)?$",
+        "errorMessage": "FASTQ read 2 is optional; when provided it must not contain spaces and must end with .fq, .fastq, .fq.gz, or .fastq.gz"
       }
     },
     "required": [
       "sample",
-      "fastq_1",
-      "fastq_2"
+      "fastq_1"
     ]
   }
 }

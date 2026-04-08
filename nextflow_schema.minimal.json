@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/master/nextflow_schema.minimal.json",
+  "title": "rnaseq-nf minimal launch schema",
+  "description": "Minimal launch schema exposing only the key user-facing parameters for rnaseq-nf.",
+  "type": "object",
+  "$defs": {
+    "launch_options": {
+      "title": "Launch options",
+      "type": "object",
+      "fa_icon": "fas fa-rocket",
+      "description": "Minimal parameter set intended for Seqera Launchpad or other simplified launch forms.",
+      "required": [
+        "input"
+      ],
+      "properties": {
+        "input": {
+          "type": "string",
+          "format": "file-path",
+          "exists": true,
+          "mimetype": "text/csv",
+          "schema": "assets/schema_input.json",
+          "pattern": "^\\S+\\.csv$",
+          "description": "Path to the samplesheet CSV containing sample identifiers and paired FASTQ files.",
+          "help_text": "Provide a CSV file with the columns `sample`, `fastq_1`, and `fastq_2`. Relative FASTQ paths are resolved from the samplesheet location.",
+          "fa_icon": "fas fa-file-csv",
+          "default": "${projectDir}/data/samplesheet.csv",
+          "errorMessage": "The input must be a valid CSV file path with no spaces, ending in '.csv', and must exist."
+        },
+        "outdir": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
+          "fa_icon": "fas fa-folder-open",
+          "default": "results"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/$defs/launch_options"
+    }
+  ]
+}

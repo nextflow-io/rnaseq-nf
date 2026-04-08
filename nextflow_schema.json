@@ -36,15 +36,21 @@
           "format": "file-path",
           "description": "The input transcriptome file",
           "fa_icon": "fas fa-folder-open",
-          "default": "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
+          "default": "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa",
+          "exists": true,
+          "help_text": "Transcriptome FASTA used to build the Salmon index."
         },
         "multiqc": {
           "type": "string",
           "format": "directory-path",
           "fa_icon": "fas fa-folder-open",
-          "default": "${projectDir}/multiqc"
+          "default": "${projectDir}/multiqc",
+          "help_text": "Directory containing MultiQC configuration assets bundled with the pipeline."
         }
-      }
+      },
+      "required": [
+        "input"
+      ]
     }
   },
   "allOf": [

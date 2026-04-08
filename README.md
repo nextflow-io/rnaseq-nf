@@ -123,7 +123,12 @@ This example keeps nf-schema usage intentionally minimal:
 - parameter summary logging via `paramsSummaryLog(workflow)`
 - CSV input validation for `--input` via `assets/schema_input.json`
 
-The pipeline schema advertises the samplesheet as `text/csv`, which lets Seqera Platform show compatible CSV datasets in the Launchpad input selector.
+Schema files in this repository:
+
+- `nextflow_schema.json` — full schema containing all pipeline parameters currently defined in `main.nf`
+- `nextflow_schema.minimal.json` — reduced schema exposing only `input` and `outdir` for simplified launch forms in Seqera Platform
+
+The pipeline schema advertises the samplesheet as `text/csv`, which lets Seqera Platform show compatible CSV datasets in the Launchpad input selector. In Seqera Platform you can use the repository default schema for the full form, or choose **Repository path** and point to `nextflow_schema.minimal.json` for the minimal form.
 
 ## Components 
 

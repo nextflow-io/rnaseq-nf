@@ -1,0 +1,5 @@
+sample,fastq_1,fastq_2
+ggal_gut,ggal/ggal_gut_1.fq,ggal/ggal_gut_2.fq
+ggal_liver,ggal/ggal_liver_1.fq,ggal/ggal_liver_2.fq
+ggal_lung,ggal/ggal_lung_1.fq,ggal/ggal_lung_2.fq
+ggal_spleen,ggal/ggal_spleen_1.fq,ggal/ggal_spleen_2.fq

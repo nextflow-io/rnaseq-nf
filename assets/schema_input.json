@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/master/assets/schema_input.json",
+  "title": "rnaseq-nf pipeline - params.input schema",
+  "description": "Schema for the file provided with params.input",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "sample": {
+        "type": "string",
+        "pattern": "^\\S+$",
+        "meta": [
+          "id"
+        ],
+        "errorMessage": "Sample name must be provided and cannot contain spaces"
+      },
+      "fastq_1": {
+        "type": "string",
+        "format": "file-path",
+        "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q(\\.gz)?$",
+        "errorMessage": "FASTQ read 1 must be provided, cannot contain spaces, and must end with .fq, .fastq, .fq.gz, or .fastq.gz"
+      },
+      "fastq_2": {
+        "type": "string",
+        "format": "file-path",
+        "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q(\\.gz)?$",
+        "errorMessage": "FASTQ read 2 must be provided, cannot contain spaces, and must end with .fq, .fastq, .fq.gz, or .fastq.gz"
+      }
+    },
+    "required": [
+      "sample",
+      "fastq_1",
+      "fastq_2"
+    ]
+  }
+}

@@ -26,7 +26,7 @@ record SampleArtifacts {
 
 params {
     outdir: String = 'results'
-    reads: String = "${baseDir}/data/ggal/ggal_gut_{1,2}.fq"
+    input: String = "${baseDir}/data/samplesheet.csv"
     transcriptome: Path = file("${baseDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa")
     multiqc: Path = file("${baseDir}/multiqc")
 }
@@ -41,6 +41,15 @@ include {
 include { RNASEQ } from './subworkflows/local/rnaseq'
 include { MULTIQC } from './modules/local/multiqc'
 
+Path resolveSamplePath(Path samplesheetDir, String samplePath) {
+    def rawPath = samplePath?.trim()
+    assert rawPath : 'Encountered an empty FASTQ path in the samplesheet'
+
+    def candidate = file(rawPath)
+    def resolved = candidate.isAbsolute() ? candidate : samplesheetDir.resolve(rawPath)
+    return file(resolved.toString(), checkIfExists: true)
+}
+
 /* 
  * main script flow
  */
@@ -51,10 +60,18 @@ workflow {
     validateParameters()
     log.info paramsSummaryLog(workflow)
 
-    read_pairs_ch = channel
-        .fromFilePairs(params.reads, checkIfExists: true, flat: true)
-        .map { id: String, fastq_1: Path, fastq_2: Path ->
-            record(id: id, fastq_1: fastq_1, fastq_2: fastq_2)
+    def samplesheet = file(params.input, checkIfExists: true)
+    def samplesheetDir = samplesheet.parent ?: baseDir
+
+    read_pairs_ch = Channel
+        .fromPath(samplesheet.toString(), checkIfExists: true)
+        .splitCsv(header: true)
+        .map { row ->
+            record(
+                id: row.sample as String,
+                fastq_1: resolveSamplePath(samplesheetDir, row.fastq_1 as String),
+                fastq_2: resolveSamplePath(samplesheetDir, row.fastq_2 as String)
+            )
         }
 
     samples_ch = RNASEQ(read_pairs_ch, params.transcriptome)

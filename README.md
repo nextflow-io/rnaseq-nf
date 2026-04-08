@@ -19,10 +19,10 @@ implemented with Nextflow.
       
         curl -s https://get.nextflow.io | bash
 
-3. Launch the pipeline execution with Wave-managed containers: 
+3. Launch the pipeline execution with the bundled example samplesheet:
 
         ./nextflow run nextflow-io/rnaseq-nf
-        
+
 4. When the execution completes open in your browser the report generated at the following path:
 
         results/multiqc_report.html 
@@ -32,16 +32,35 @@ You can see an example report at the following [link](http://multiqc.info/exampl
 Note: the very first time you execute it, it will take a few minutes to download the pipeline 
 from this GitHub repository and let Wave provision the containers needed to execute the workflow.  
 
+## Samplesheet input
+
+The pipeline now accepts an input CSV via `--input`, with the repository default pointing to `data/samplesheet.csv`.
+The samplesheet must contain the following header row:
+
+```csv
+sample,fastq_1,fastq_2
+```
+
+Example:
+
+```csv
+sample,fastq_1,fastq_2
+ggal_gut,ggal/ggal_gut_1.fq,ggal/ggal_gut_2.fq
+```
+
+Relative FASTQ paths are resolved from the directory containing the samplesheet, which makes it easy to keep a portable `samplesheet.csv` alongside your data.
+
 ## Profiles
 
 This example intentionally keeps only a small set of profiles:
 
-- `all-reads` — convenience profile that runs the full bundled example dataset
+- `all-reads` — convenience profile that runs the full bundled example dataset via `data/samplesheet_all.csv`
 
 Examples:
 
 ```bash
 ./nextflow run .
+./nextflow run . --input /path/to/samplesheet.csv
 ./nextflow run . -profile all-reads
 ```
 
@@ -52,26 +71,27 @@ Here is a visual representation of the design of RNASeq-NF pipeline, generated u
 ```mermaid
 %%{init: { 'theme': 'forest' } }%%
 flowchart TD
-    p0((Channel.fromFilePairs))
-    p1(( ))
-    p2[RNASEQ:INDEX]
-    p3[RNASEQ:FASTQC]
-    p4[RNASEQ:QUANT]
-    p5([concat])
-    p6([collect])
-    p7(( ))
-    p8[MULTIQC]
-    p9(( ))
-    p0 -->|read_pairs_ch| p3
-    p1 -->|transcriptome| p2
-    p2 --> p4
+    p0((Channel.fromPath))
+    p1([splitCsv])
+    p2(( ))
+    p3[RNASEQ:INDEX]
+    p4[RNASEQ:FASTQC]
+    p5[RNASEQ:QUANT]
+    p6([concat])
+    p7([collect])
+    p8(( ))
+    p9[MULTIQC]
+    p10(( ))
+    p0 --> p1 -->|read_pairs_ch| p4
+    p1 -->|read_pairs_ch| p5
+    p2 -->|transcriptome| p3
     p3 --> p5
-    p0 -->|read_pairs_ch| p4
-    p4 -->|pair_id| p5
-    p5 --> p6
-    p6 -->|$out0| p8
-    p7 -->|config| p8
-    p8 --> p9
+    p4 --> p6
+    p5 -->|pair_id| p6
+    p6 --> p7
+    p7 -->|$out0| p9
+    p8 -->|config| p9
+    p9 --> p10
 ```
 
 ## Execution notes
@@ -101,6 +121,9 @@ This example keeps nf-schema usage intentionally minimal:
 
 - parameter validation via `validateParameters()`
 - parameter summary logging via `paramsSummaryLog(workflow)`
+- CSV input validation for `--input` via `assets/schema_input.json`
+
+The pipeline schema advertises the samplesheet as `text/csv`, which lets Seqera Platform show compatible CSV datasets in the Launchpad input selector.
 
 ## Components 
 
@@ -109,4 +132,3 @@ RNASeq-NF uses the following software components and tools:
 * [Salmon](https://combine-lab.github.io/salmon/)
 * [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 * [MultiQC](https://multiqc.info)
-

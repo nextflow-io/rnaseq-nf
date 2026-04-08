@@ -18,11 +18,18 @@
           "fa_icon": "fas fa-folder-open",
           "default": "results"
         },
-        "reads": {
+        "input": {
           "type": "string",
-          "description": "The input read-pair files",
-          "fa_icon": "fas fa-folder-open",
-          "default": "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
+          "format": "file-path",
+          "exists": true,
+          "mimetype": "text/csv",
+          "schema": "assets/schema_input.json",
+          "pattern": "^\\S+\\.csv$",
+          "description": "Path to the samplesheet CSV containing sample identifiers and paired FASTQ files.",
+          "help_text": "Provide a CSV file with the columns `sample`, `fastq_1`, and `fastq_2`. Relative FASTQ paths are resolved from the samplesheet location.",
+          "fa_icon": "fas fa-file-csv",
+          "default": "${projectDir}/data/samplesheet.csv",
+          "errorMessage": "The input must be a valid CSV file path with no spaces, ending in '.csv', and must exist."
         },
         "transcriptome": {
           "type": "string",

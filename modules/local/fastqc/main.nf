@@ -1,12 +1,21 @@
+nextflow.preview.types = true
+
 process FASTQC {
     tag "${id}"
     conda 'bioconda::fastqc=0.12.1'
 
     input:
-    tuple val(id), path(fastq_1), path(fastq_2)
+    record(
+        id: String,
+        fastq_1: Path,
+        fastq_2: Path
+    )
 
     output:
-    tuple val(id), path("fastqc_${id}_logs"), emit: logs
+    record(
+        id: id,
+        fastqc: file("fastqc_${id}_logs")
+    )
 
     script:
     """

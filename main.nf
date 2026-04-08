@@ -67,8 +67,8 @@ workflow {
     def samplesheetDir = samplesheet.parent ?: baseDir
 
     read_pairs_ch = channel
-        .fromPath(samplesheet.toString(), checkIfExists: true)
-        .splitCsv(header: true)
+        .of(samplesheet)
+        .flatMap { csv -> csv.splitCsv(header: true) }
         .map { row ->
             record(
                 id: row.sample as String,

@@ -17,6 +17,8 @@ It is intentionally checked in as a design artifact rather than a runnable packa
 - `example-monorepo/packages/agent/` — root JS package users install
 - `example-monorepo/packages/agent-linux-x64-gnu/` — representative platform package
 - `example-monorepo/parsers/lock.json` — parser set lockfile
+- `AST_GREP_NOTES.md` — ast-grep-specific rethink based on upstream packaging + local git history
+- `ast-grep-wrapper-example/` — smaller example of the packaging shape I'd use if this is really ast-grep-first
 
 ## Intentional shortcuts
 

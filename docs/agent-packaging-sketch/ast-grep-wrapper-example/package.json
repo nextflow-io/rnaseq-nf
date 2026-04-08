@@ -1,0 +1,24 @@
+{
+  "name": "@yourorg/ast-grep-runtime",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@ast-grep/napi": "^0.42.1",
+    "@ast-grep/lang-bash": "^0.0.7",
+    "@ast-grep/lang-javascript": "^0.0.7",
+    "@ast-grep/lang-json": "^0.0.7",
+    "@ast-grep/lang-tsx": "^0.0.7",
+    "@ast-grep/lang-typescript": "^0.0.7",
+    "@ast-grep/lang-yaml": "^0.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "^5.8.0"
+  }
+}

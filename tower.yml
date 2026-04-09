@@ -1,3 +1,6 @@
-reports:
-  multiqc_report.html:
-    display: "MultiQC HTML report"
+# Seqera reports only work for published files that end up at cloud-accessible
+# storage locations. This pipeline currently defaults to a local relative
+# outputDir (`results`), which makes Seqera try to open `/results/...` and fail
+# with `Invalid S3 file path` during cloud runs. Disable automatic report
+# registration here until the pipeline's outputDir defaults are made cloud-safe.
+reports: {}

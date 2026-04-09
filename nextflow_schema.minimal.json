@@ -24,7 +24,7 @@
           "description": "Path to the samplesheet CSV containing sample identifiers and paired FASTQ files.",
           "help_text": "Provide a CSV file with the columns `sample`, `fastq_1`, and `fastq_2`. Relative FASTQ paths are resolved from the samplesheet location.",
           "fa_icon": "fas fa-file-csv",
-          "default": "${projectDir}/data/samplesheet.csv",
+          "default": "https://cloud.dev-seqera.io/api/workspaces/269037456042199/datasets/47i9PAdl1KcJ749UdjQvSX/v/1/n/rnaseq-demo-samplesheet-cloud.csv",
           "errorMessage": "The input must be a valid CSV file path with no spaces, ending in '.csv', and must exist."
         },
         "outdir": {
@@ -32,7 +32,7 @@
           "format": "directory-path",
           "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
           "fa_icon": "fas fa-folder-open",
-          "default": "results"
+          "default": "s3://a-test-bucket-eend-us-east-1/rnaseq/results"
         }
       }
     }

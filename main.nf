@@ -48,6 +48,10 @@ def resolveSamplePath(Path samplesheetDir, String samplePath, boolean required =
         return null
     }
 
+    if( rawPath ==~ /^[A-Za-z][A-Za-z0-9+.-]*:\/\/.+/ ) {
+        return file(rawPath, checkIfExists: true)
+    }
+
     def candidate = file(rawPath)
     def resolved = candidate.isAbsolute() ? candidate : samplesheetDir.resolve(rawPath)
     return file(resolved.toString(), checkIfExists: true)

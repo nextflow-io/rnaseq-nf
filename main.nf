@@ -4,20 +4,30 @@
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
 
+nextflow.preview.types = true
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.reads` specify on the run command line `--reads some_value`.
  */
 
-params.reads = null
-params.transcriptome = null
-params.multiqc = "${projectDir}/multiqc"
+params {
+    // The input read-pair files
+    reads: Path
+
+    // The input transcriptome file
+    transcriptome: Path
+
+    // Directory containing multiqc configuration
+    multiqc: Path = "${projectDir}/multiqc"
+}
 
 
 // import modules
 include { RNASEQ } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
+
+include { AlignedSample } from './modules/rnaseq'
 
 /* 
  * main script flow
@@ -32,30 +42,23 @@ workflow {
       outdir       : ${workflow.outputDir}
     """.stripIndent()
 
-    read_pairs_ch = channel.fromPath(params.reads)
+    read_pairs_ch = channel.of(params.reads)
         .flatMap { csv -> csv.splitCsv() }
-        .map { id, fastq_1, fastq_2 ->
-            tuple(id, file(fastq_1, checkIfExists: true), file(fastq_2, checkIfExists: true))
+        .map { row -> row as List<String> }
+        .map { row ->
+            record(id: row[0], fastq_1: file(row[1], checkIfExists: true), fastq_2: file(row[2], checkIfExists: true))
         }
 
     samples_ch = RNASEQ(read_pairs_ch, params.transcriptome)
 
     multiqc_files_ch = samples_ch
-        .flatMap { id, fastqc, quant -> [fastqc, quant] }
+        .flatMap { r -> [r.fastqc, r.quant] }
         .collect()
 
     multiqc_report = MULTIQC(multiqc_files_ch, params.multiqc)
 
-    workflow.onComplete = {
-        log.info(
-            workflow.success
-                ? "\nDone! Open the following report in your browser --> ${workflow.outputDir}/multiqc_report.html\n"
-                : "Oops .. something went wrong"
-        )
-    }
-
     publish:
-    samples = samples_ch.map { id, fastqc, quant -> [id: id, fastqc: fastqc, quant: quant] }
+    samples = samples_ch
     multiqc_report = multiqc_report
 }
 
@@ -63,7 +66,7 @@ workflow {
  * workflow outputs
  */
 output {
-    samples {
+    samples: Channel<AlignedSample> {
         path { sample ->
             sample.fastqc >> "fastqc/${sample.id}"
             sample.quant >> "quant/${sample.id}"
@@ -74,6 +77,6 @@ output {
         }
     }
 
-    multiqc_report {
+    multiqc_report: Path {
     }
 }

@@ -1,13 +1,15 @@
 
+nextflow.preview.types = true
+
 process INDEX {
     tag "${transcriptome.simpleName}"
     conda 'bioconda::salmon=1.10.3'
 
     input:
-    path transcriptome
+    transcriptome: Path
 
     output:
-    path 'index'
+    file('index')
 
     script:
     """

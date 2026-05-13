@@ -1,4 +1,4 @@
-#!/usr/bin/env nextflow 
+#!/usr/bin/env nextflow
 
 /*
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
@@ -11,7 +11,6 @@
 
 params.reads = null
 params.transcriptome = null
-params.outdir = "results"
 params.multiqc = "${projectDir}/multiqc"
 
 
@@ -19,17 +18,17 @@ params.multiqc = "${projectDir}/multiqc"
 include { RNASEQ } from './modules/rnaseq'
 include { MULTIQC } from './modules/multiqc'
 
-/* 
+/*
  * main script flow
  */
 workflow {
-
+    main:
     log.info """\
       R N A S E Q - N F   P I P E L I N E
       ===================================
       transcriptome: ${params.transcriptome}
       reads        : ${params.reads}
-      outdir       : ${params.outdir}
+      outdir       : ${workflow.outputDir}
     """.stripIndent()
 
     // Create a channel of paired-end reads from the glob in `params.reads`.
@@ -39,25 +38,60 @@ workflow {
     read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true, flat: true)
 
     // Run the RNASEQ sub-workflow over each read pair against the transcriptome.
-    // It emits two channels which we destructure here:
-    //   - fastqc_ch: per-sample FastQC report directories
-    //   - quant_ch : per-sample Salmon quantification directories
-    (fastqc_ch, quant_ch) = RNASEQ(read_pairs_ch, params.transcriptome)
+    // It emits a channel of tuples with the following elements:
+    //   - per-sample ID
+    //   - per-sample FastQC report directories
+    //   - per-sample Salmon quantification directories
+    samples_ch = RNASEQ(read_pairs_ch, params.transcriptome)
 
-    // Mix FastQC and Salmon outputs into a single stream (`mix`) and collect
-    // every emission into a list (`collect`) so that MultiQC sees all results at
+    // Extract the FastQC and Salmon outputs into a single stream (`flatMap`) and
+    // collect them into a list (`collect`) so that MultiQC sees all results at
     // once, e.g. [fastqc/ggal_gut, quant/ggal_gut, fastqc/ggal_liver, ...].
-    multiqc_files_ch = fastqc_ch.mix(quant_ch).collect()
+    multiqc_files_ch = samples_ch
+        .flatMap { id, fastqc, quant -> [fastqc, quant] }
+        .collect()
 
     // Run MultiQC on the collected result files using the config in `params.multiqc`
     // to produce a single consolidated HTML report (`multiqc_report.html`).
-    MULTIQC(multiqc_files_ch, params.multiqc)
+    multiqc_report = MULTIQC(multiqc_files_ch, params.multiqc)
 
-    workflow.onComplete = {
-        log.info(
-            workflow.success
-                ? "\nDone! Open the following report in your browser --> ${params.outdir}/multiqc_report.html\n"
-                : "Oops .. something went wrong"
-        )
+    // Publish per-sample results and aggregated MultiQC report as workflow outputs
+    // The directory paths for these outputs are defined in the `output` block below.
+    publish:
+    samples = samples_ch.map { id, fastqc, quant -> [id: id, fastqc: fastqc, quant: quant] }
+    multiqc_report = multiqc_report
+}
+
+/*
+ * workflow outputs
+ *
+ * The `output` block defines the directory structure of published outputs.
+ * The base output directory can be set using the `-output-dir` CLI option
+ * or `outputDir` config option. It defaults to `results`.
+ * By default, all published files are saved directly in the output directory.
+ * The `path` directive can be used to route files to specific paths within
+ * the output directory.
+ */
+output {
+    // Publish the per-sample FastQC and Salmon results into
+    // the `fastqc` and `quant` subdirectories, respectively.
+    samples {
+        // Per-sample results are separated further into subdirectories
+        // by ID (e.g. `fastqc/ggal_gut`, `fastqc/ggal_liver`, etc).
+        path { sample ->
+            sample.fastqc >> "fastqc/${sample.id}"
+            sample.quant >> "quant/${sample.id}"
+        }
+        // Create an index file (samplesheet) of the published
+        // samples in the output directory, e.g. `results/samples.csv`.
+        index {
+            path 'samples.csv'
+            header true
+        }
+    }
+
+    // Publish the aggregated MultiQC HTML report in the
+    // output directory, e.g. `results/multiqc_report.html`
+    multiqc_report {
     }
 }

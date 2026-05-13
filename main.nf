@@ -4,7 +4,6 @@
  * Proof of concept of a RNAseq pipeline implemented with Nextflow
  */
 
-
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.foo` specify on the run command line `--foo some_value`.

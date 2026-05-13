@@ -2,7 +2,7 @@
 
 A basic pipeline for quantification of genomic features from short-read data, implemented with [Nextflow](http://www.nextflow.io).
 
-[![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A523.10.0-brightgreen.svg)](http://nextflow.io)
+[![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A525.10.0-brightgreen.svg)](http://nextflow.io)
 
 ## Requirements
 

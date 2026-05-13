@@ -111,8 +111,6 @@ process {
 
 The above example will make Nextflow submit jobs to a UGE cluster using the `my-queue` queue.
 
-To learn more about the available settings and the configuration file read the Nextflow [documentation](http://www.nextflow.io/docs/latest/config.html).
-
 See the Nextflow documentation to learn more about [Executors](https://docs.seqera.io/nextflow/executor) and [Configuration](https://docs.seqera.io/nextflow/config).
 
 ## Software dependencies

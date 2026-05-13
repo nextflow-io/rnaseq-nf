@@ -7,13 +7,13 @@ A basic pipeline for quantification of genomic features from short-read data, im
 ## Requirements
 
 * Unix-like operating system (Linux, macOS, etc)
-* Java 11
+* Java 17
 
 ## Quickstart
 
 1. Install [Docker](https://docs.docker.com/) if you don't have it already.
 
-2. Install Nextflow (version 23.10 or later):
+2. Install Nextflow (version 25.10 or later):
 
    ```bash
    curl -s https://get.nextflow.io | bash

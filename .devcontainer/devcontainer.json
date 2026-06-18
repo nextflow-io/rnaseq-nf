@@ -19,7 +19,7 @@
     },
     "remoteEnv": {
         "NXF_HOME": "/workspaces/.nextflow",
-        "NXF_VER": "25.10.4",
+        "NXF_VER": "26.04.4",
         "NXF_SYNTAX_PARSER": "v2"
     },
     "onCreateCommand": "bash .devcontainer/setup.sh",

@@ -1,10 +1,15 @@
-version ?= v1.3.1
+version ?= v1.4.0
+image ?= docker.io/nextflow/rnaseq-nf
+platforms ?= linux/amd64,linux/arm64
 
-all: build push
+all: push
 
+# single-arch image loaded in the local docker daemon, for testing
 build:
 	cp ../conda.yml .
-	docker build --output=type=docker --progress=plain --tag docker.io/nextflow/rnaseq-nf:${version} .
-	
+	docker buildx build --load --progress=plain --tag ${image}:${version} .
+
+# ponytail: multi-arch manifests can't be --load'ed, so build+push is one step
 push:
-	docker push docker.io/nextflow/rnaseq-nf:${version}
+	cp ../conda.yml .
+	docker buildx build --push --platform ${platforms} --progress=plain --tag ${image}:${version} .

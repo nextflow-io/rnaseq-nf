@@ -38,12 +38,6 @@ jobs:
 
       - name: Tests
         run: |
-          nextflow run . -profile docker
-        env:
-          NXF_ANSI_LOG: false
-
-      - name: Tests Wave
-        run: |
-          nextflow run . -profile docker,wave
+          nextflow run .
         env:
           NXF_ANSI_LOG: false

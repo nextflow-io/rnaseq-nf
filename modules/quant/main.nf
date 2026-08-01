@@ -1,14 +1,22 @@
+nextflow.enable.types = true
 
 process QUANT {
-    tag "${id}"
+    tag id
     conda 'bioconda::salmon=1.10.3'
 
     input:
-    tuple val(id), path(fastq_1), path(fastq_2)
-    path index
+    record(
+        id: String,
+        fastq_1: Path,
+        fastq_2: Path
+    )
+    index: Path
 
     output:
-    tuple val(id), path("quant_${id}")
+    record(
+        id: id,
+        quant: file("quant_${id}")
+    )
 
     script:
     """

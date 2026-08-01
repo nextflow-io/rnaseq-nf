@@ -19,9 +19,9 @@ params {
 
 
 // import modules
-include { RNASEQ } from './modules/rnaseq'
-include { MULTIQC } from './modules/multiqc'
-include { AlignedSample } from './modules/rnaseq'
+include { RNASEQ } from './subworkflows/local/rnaseq'
+include { MULTIQC } from './modules/local/multiqc'
+include { AlignedSample } from './subworkflows/local/rnaseq'
 
 /*
  * main script flow

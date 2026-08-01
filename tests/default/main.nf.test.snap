@@ -1,0 +1,19 @@
+{
+    "runs successfully with bundled example inputs": {
+        "content": [
+            0,
+            4,
+            [
+                "fastqc",
+                "multiqc_report.html",
+                "quant",
+                "samples.csv"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        },
+        "timestamp": "2026-08-01T00:00:00"
+    }
+}

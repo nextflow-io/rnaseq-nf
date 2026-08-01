@@ -2,4 +2,7 @@
 .idea/*
 work/*
 results
-lineage
+.lineage/
+.nf-test/
+.nf-test.log
+nf-*-reports.tsv

@@ -19,32 +19,25 @@ params {
 
 
 // import modules
-include { RNASEQ } from './modules/rnaseq'
-include { MULTIQC } from './modules/multiqc'
-include { AlignedSample } from './modules/rnaseq'
+include { RNASEQ } from './subworkflows/local/rnaseq'
+include { MULTIQC } from './modules/local/multiqc'
+include { AlignedSample } from './subworkflows/local/rnaseq'
+include { samplesheetToList; validateParameters } from 'plugin/nf-schema'
 
 /*
  * main script flow
  */
 workflow {
     main:
-    log.info """\
-      R N A S E Q - N F   P I P E L I N E
-      ===================================
-      transcriptome: ${params.transcriptome}
-      reads        : ${params.reads}
-      outdir       : ${workflow.outputDir}
-    """.stripIndent()
+    validateParameters()
 
     // Create one typed record per row in the CSV samplesheet.
-    read_pairs_ch = channel.of(params.reads)
-        .flatMap { csv -> csv.splitCsv() }
-        .map { row -> row as List<String> }
+    read_pairs_ch = channel.fromList(samplesheetToList(params.reads, 'assets/schema_input.json'))
         .map { row: List<String> ->
             record(
                 id: row[0],
-                fastq_1: file(row[1], checkIfExists: true),
-                fastq_2: file(row[2], checkIfExists: true)
+                fastq_1: file(row[1].toString(), checkIfExists: true),
+                fastq_2: file(row[2].toString(), checkIfExists: true)
             )
         }
 

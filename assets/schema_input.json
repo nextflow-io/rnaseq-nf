@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/master/assets/schema_input.json",
+  "title": "rnaseq-nf samplesheet",
+  "description": "Paired-end FASTQ inputs for rnaseq-nf",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "sample": {
+        "type": "string",
+        "pattern": "^\\S+$",
+        "errorMessage": "Sample names cannot contain spaces"
+      },
+      "fastq_1": {
+        "type": "string",
+        "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
+        "errorMessage": "fastq_1 must be a FASTQ path without spaces"
+      },
+      "fastq_2": {
+        "type": "string",
+        "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
+        "errorMessage": "fastq_2 must be a FASTQ path without spaces"
+      }
+    },
+    "required": [
+      "sample",
+      "fastq_1",
+      "fastq_2"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+nextflow_pipeline {
+
+    name "main.nf default smoke test"
+    script "../../main.nf"
+
+    test("runs successfully with bundled example inputs") {
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.exitStatus,
+                workflow.trace.succeeded().size(),
+                path("$launchDir/results").list().collect { it.getFileName().toString() }.sort()
+            ).match()
+        }
+    }
+}

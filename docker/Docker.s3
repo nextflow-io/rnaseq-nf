@@ -1,3 +1,0 @@
-FROM nextflow/rnaseq-nf:latest 
-
-RUN conda install -y awscli

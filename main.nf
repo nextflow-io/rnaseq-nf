@@ -22,7 +22,7 @@ params {
 include { RNASEQ } from './subworkflows/local/rnaseq'
 include { MULTIQC } from './modules/local/multiqc'
 include { AlignedSample } from './subworkflows/local/rnaseq'
-include { paramsSummaryLog; samplesheetToList; validateParameters } from 'plugin/nf-schema'
+include { samplesheetToList; validateParameters } from 'plugin/nf-schema'
 
 /*
  * main script flow
@@ -30,7 +30,6 @@ include { paramsSummaryLog; samplesheetToList; validateParameters } from 'plugin
 workflow {
     main:
     validateParameters()
-    log.info paramsSummaryLog(workflow)
 
     // Create one typed record per row in the CSV samplesheet.
     read_pairs_ch = channel.fromList(samplesheetToList(params.reads, 'assets/schema_input.json'))

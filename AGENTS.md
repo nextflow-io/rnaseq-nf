@@ -2,7 +2,7 @@
 purpose: Guide small, verifiable agent edits to rnaseq-nf.
 applies_to: Entire repository.
 entrypoint: main.nf
-verification: NXF_VER=26.04.6 nf-test test tests/default/main.nf.test
+verification: NXF_VER=26.04.6 nf-test test --profile wave tests/default/main.nf.test
 update_when: Workflow structure or validation commands change.
 ---
 
@@ -24,5 +24,5 @@ From the repository root:
 
 ```console
 NXF_VER=26.04.6 nextflow lint .
-NXF_VER=26.04.6 nf-test test tests/default/main.nf.test
+NXF_VER=26.04.6 nf-test test --profile wave tests/default/main.nf.test
 ```

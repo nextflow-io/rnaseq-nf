@@ -13,9 +13,12 @@
       "properties": {
         "reads": {
           "type": "string",
-          "description": "The input read-pair files",
-          "fa_icon": "fas fa-folder-open",
-          "default": "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
+          "format": "file-path",
+          "mimetype": "text/csv",
+          "pattern": "^\\S+\\.csv$",
+          "description": "CSV samplesheet containing sample IDs and paired FASTQ paths",
+          "fa_icon": "fas fa-file-csv",
+          "default": "${projectDir}/data/gut.csv"
         },
         "transcriptome": {
           "type": "string",

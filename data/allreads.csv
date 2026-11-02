@@ -1,0 +1,4 @@
+ggal_gut,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_gut_1.fq,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_gut_2.fq
+ggal_liver,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_liver_1.fq,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_liver_2.fq
+ggal_lung,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_lung_1.fq,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_lung_2.fq
+ggal_spleen,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_spleen_1.fq,https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/refs/heads/master/data/ggal/ggal_spleen_2.fq

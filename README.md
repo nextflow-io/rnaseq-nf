@@ -2,7 +2,7 @@
 
 A basic pipeline for quantification of genomic features from short-read data, implemented with [Nextflow](http://www.nextflow.io).
 
-[![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A525.10.0-brightgreen.svg)](http://nextflow.io)
+[![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A526.04.0-brightgreen.svg)](http://nextflow.io)
 
 ## Requirements
 
@@ -13,7 +13,7 @@ A basic pipeline for quantification of genomic features from short-read data, im
 
 1. Install [Docker](https://docs.docker.com/) if you don't have it already.
 
-2. Install Nextflow (version 25.10 or later):
+2. Install Nextflow (version 26.04 or later):
 
    ```bash
    curl -s https://get.nextflow.io | bash

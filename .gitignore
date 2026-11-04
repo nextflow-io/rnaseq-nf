@@ -1,0 +1,5 @@
+.nextflow*
+.idea/*
+work/*
+results
+lineage

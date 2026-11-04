@@ -1,0 +1,36 @@
+// Dev container for rnaseq-nf
+// Provides Nextflow, nf-test, Docker-in-Docker and the Seqera CLI.
+// Inspired by the nextflow-io/training dev container setup.
+{
+    "name": "rnaseq-nf",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+    "features": {
+        // Java is required by Nextflow and nf-test (matches CI: Java 21 / temurin)
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "21",
+            "jdkDistro": "tem"
+        },
+        // Docker-in-Docker so the pipeline can pull and run process containers
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        // Node is needed for the Seqera CLI (npm install -g seqera)
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        }
+    },
+    "remoteEnv": {
+        "NXF_HOME": "/workspaces/.nextflow",
+        "NXF_VER": "26.04.4",
+        "NXF_SYNTAX_PARSER": "v2"
+    },
+    "onCreateCommand": "bash .devcontainer/setup.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "nf-core.nf-core-extensionpack"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    }
+}
